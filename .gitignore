@@ -38,6 +38,7 @@ build/
 application-local.properties
 application-local.yml
 secrets.properties
+src/main/resources/application.properties
 
 # Maven
 target/
