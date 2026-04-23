@@ -11,7 +11,7 @@ public class ActivityComment {
     // TODO: fk constraints lmao
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ActivitiesCommentId;
+    private Long activitiesCommentId;
 
     private String comment;
 
@@ -25,7 +25,7 @@ public class ActivityComment {
     }
 
     public Long getActivitiesCommentId() {
-        return ActivitiesCommentId;
+        return activitiesCommentId;
     }
 
     public String getComment() {

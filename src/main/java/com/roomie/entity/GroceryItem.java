@@ -12,7 +12,7 @@ public class GroceryItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long GroceryItemId;
+    private Long groceryItemId;
 
     private String itemName;
 
@@ -33,7 +33,7 @@ public class GroceryItem {
     }
 
     public Long getGroceryItemId() {
-        return GroceryItemId;
+        return groceryItemId;
     }
 
     public String getItemName() {
