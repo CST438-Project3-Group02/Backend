@@ -3,6 +3,7 @@ package com.roomie.entity;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.time.Instant;
 
 @Entity
 @Table(name = "invite")
