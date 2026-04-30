@@ -1,7 +1,6 @@
 package com.roomie.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
