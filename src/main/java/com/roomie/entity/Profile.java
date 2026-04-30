@@ -2,12 +2,13 @@ package com.roomie.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
+import tools.jackson.databind.ser.jdk.NumberSerializers.Base;
 
 @Entity
 @Table(name = "profile")
-public class Profile {
+public class Profile extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,49 +25,76 @@ public class Profile {
     @Column(unique = true, nullable = false)
     private String oauth_id;
 
-    private Instant createdAt;
-
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) //done
+    @OneToMany(
+        mappedBy = "profile",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    ) //done
     private List<ProfileHousehold> profileHouseholds;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "profile",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<Bill> bills;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "profile",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<GroceryItem> groceryItems;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "profile",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<GroceryList> groceryLists;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "profile",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<ActivityComment> activityComments;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) // done
+    @OneToMany(
+        mappedBy = "profile",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    ) // done
     private List<ActivityReaction> activityReactions;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) // done
+    @OneToMany(
+        mappedBy = "profile",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    ) // done
     private List<Activity> activities;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) //done
+    @OneToMany(
+        mappedBy = "profile",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    ) //done
     private List<Chore> chores;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "profile",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<Invite> invites;
 
     public Profile() {}
 
-    public Profile(
-        String name,
-        String email,
-        Integer age,
-        String oauth_id,
-        Instant createdAt
-    ) {
+    public Profile(String name, String email, Integer age, String oauth_id) {
         this.name = name;
         this.email = email;
         this.age = age;
         this.oauth_id = oauth_id;
-        this.createdAt = createdAt;
     }
 
     public Long getProfileId() {
@@ -107,14 +135,6 @@ public class Profile {
 
     public String getOauth_id() {
         return oauth_id;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
     }
 
     public List<ProfileHousehold> getProfileHouseholds() {
@@ -203,8 +223,6 @@ public class Profile {
             '\'' +
             ", age=" +
             age +
-            ", oauth_id='" +
-            oauth_id +
             '\'' +
             '}'
         );

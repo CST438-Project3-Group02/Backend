@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "activity")
-public class Activity {
+public class Activity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,25 +19,26 @@ public class Activity {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    private Instant createdAt;
-
     private boolean isCompleted;
 
-    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "activity",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<ActivityReaction> activityReactions;
 
-    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "activity",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<ActivityComment> activityComments;
 
     public Activity() {}
 
-    public Activity(
-        Integer activityType,
-        Instant createdAt,
-        boolean isCompleted
-    ) {
+    public Activity(Integer activityType, boolean isCompleted) {
         this.activityType = activityType;
-        this.createdAt = createdAt;
         this.isCompleted = isCompleted;
     }
 
@@ -59,14 +60,6 @@ public class Activity {
 
     public void setActivityType(Integer activityType) {
         this.activityType = activityType;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
     }
 
     public boolean isCompleted() {
@@ -101,8 +94,6 @@ public class Activity {
             activityId +
             ", activityType=" +
             activityType +
-            ", createdAt=" +
-            createdAt +
             ", isCompleted=" +
             isCompleted +
             '}'

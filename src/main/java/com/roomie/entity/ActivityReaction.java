@@ -2,12 +2,12 @@ package com.roomie.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "activity_reaction")
-public class ActivityReaction {
+public class ActivityReaction extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,13 +23,10 @@ public class ActivityReaction {
     @JoinColumn(name = "activity_id")
     private Activity activity;
 
-    private Instant createdAt;
-
     public ActivityReaction() {}
 
-    public ActivityReaction(String reaction, Instant createdAt) {
+    public ActivityReaction(String reaction) {
         this.reaction = reaction;
-        this.createdAt = createdAt;
     }
 
     public Long getActivitiesReactionId() {
@@ -60,14 +57,6 @@ public class ActivityReaction {
         this.activity = activity;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Override
     public String toString() {
         return (
@@ -77,8 +66,6 @@ public class ActivityReaction {
             ", reaction='" +
             reaction +
             '\'' +
-            ", createdAt=" +
-            createdAt +
             '}'
         );
     }
