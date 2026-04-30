@@ -26,6 +26,10 @@ public class Bill {
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 
+    @ManyToOne
+    @JoinColumn(name = "expense_id", nullable = false)
+    private Expense expense;
+
     public Bill() {
     }
 
@@ -88,6 +92,14 @@ public class Bill {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public Expense getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Expense expense) {
+        this.expense = expense;
     }
 
     @Override

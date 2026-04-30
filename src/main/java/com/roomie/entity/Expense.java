@@ -27,6 +27,9 @@ public class Expense {
     @JoinColumn(name = "household_id", nullable = false)
     private Household household;
 
+    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bill> bills;
+
     public Expense() {
 
     }
@@ -98,6 +101,14 @@ public class Expense {
 
     public void setHousehold(Household household) {
         this.household = household;
+    }
+
+    public List<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
     }
 
     @Override
