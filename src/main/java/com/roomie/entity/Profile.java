@@ -3,6 +3,7 @@ package com.roomie.entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "profile")
@@ -41,7 +42,7 @@ public class Profile {
     private List<ActivityComment> activityComments;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) // done
-    private List<ActivitiesReaction> activitiesReactions;
+    private List<ActivityReaction> activityReactions;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) // done
     private List<Activity> activities;
@@ -137,12 +138,12 @@ public class Profile {
         this.activities = activities;
     }
 
-    public List<ActivitiesReaction> getActivitiesReactions() {
-        return activitiesReactions;
+    public List<ActivityReaction> getActivityReactions() {
+        return activityReactions;
     }
 
-    public void setActivitiesReactions(List<ActivitiesReaction> activitiesReactions) {
-        this.activitiesReactions = activitiesReactions;
+    public void setActivityReactions(List<ActivityReaction> activityReactions) {
+        this.activityReactions = activityReactions;
     }
 
     public List<ActivityComment> getActivityComments() {

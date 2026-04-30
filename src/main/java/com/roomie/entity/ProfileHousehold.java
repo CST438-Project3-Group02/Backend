@@ -3,6 +3,7 @@ package com.roomie.entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "profile_household")
@@ -54,14 +55,6 @@ public class ProfileHousehold {
         return createdAt;
     }
 
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public Household getHousehold() {
-        return household;
-    }
-
     public void setPrivs(Integer privs) {
         this.privs = privs;
     }
@@ -72,14 +65,6 @@ public class ProfileHousehold {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
-
-    public void setHousehold(Household household) {
-        this.household = household;
     }
 
     public Profile getProfile() {

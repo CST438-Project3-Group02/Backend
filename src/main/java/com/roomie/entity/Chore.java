@@ -3,6 +3,7 @@ package com.roomie.entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "chore")
