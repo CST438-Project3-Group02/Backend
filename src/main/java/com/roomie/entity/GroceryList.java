@@ -22,6 +22,9 @@ public class GroceryList {
     @JoinColumn(name = "household_id", nullable = false)
     private Household household;
 
+    @OneToMany(mappedBy = "groceryList", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GroceryItem> groceryItems;
+
     private Instant createdAt;
 
     public GroceryList() {}
@@ -57,6 +60,14 @@ public class GroceryList {
 
     public void setHousehold(Household household) {
         this.household = household;
+    }
+
+    public List<GroceryItem> getGroceryItems() {
+        return groceryItems;
+    }
+
+    public void setGroceryItems(List<GroceryItem> groceryItems) {
+        this.groceryItems = groceryItems;
     }
 
     public Instant getCreatedAt() {

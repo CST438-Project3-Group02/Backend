@@ -24,6 +24,10 @@ public class GroceryItem {
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 
+    @ManyToOne
+    @JoinColumn(name = "grocery_list_id", nullable = false)
+    private GroceryList groceryList;
+
     public GroceryItem() {}
 
     public GroceryItem(
@@ -70,6 +74,14 @@ public class GroceryItem {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public GroceryList getGroceryList() {
+        return groceryList;
+    }
+
+    public void setGroceryList(GroceryList groceryList) {
+        this.groceryList = groceryList;
     }
 
     @Override
