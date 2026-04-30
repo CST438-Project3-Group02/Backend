@@ -2,12 +2,13 @@ package com.roomie.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "expense")
-public class Expense {
+public class Expense extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long expenseId;
@@ -22,26 +23,31 @@ public class Expense {
 
     private Instant paidByDate;
 
-    private Instant createdAt;
-
     @ManyToOne
     @JoinColumn(name = "household_id", nullable = false)
     private Household household;
 
-    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "expense",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<Bill> bills;
 
-    public Expense() {
+    public Expense() {}
 
-    }
-
-    public Expense(String description, Double amount, Double splitAmount, Boolean paid, Instant paidByDate, Instant createdAt) {
+    public Expense(
+        String description,
+        Double amount,
+        Double splitAmount,
+        Boolean paid,
+        Instant paidByDate
+    ) {
         this.description = description;
         this.amount = amount;
         this.splitAmount = splitAmount;
         this.paid = paid;
         this.paidByDate = paidByDate;
-        this.createdAt = createdAt;
     }
 
     public Long getExpenseId() {
@@ -88,14 +94,6 @@ public class Expense {
         this.paidByDate = paidByDate;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public Household getHousehold() {
         return household;
     }
@@ -114,15 +112,23 @@ public class Expense {
 
     @Override
     public String toString() {
-        return "Expense{" +
-                "expenseId=" + expenseId +
-                ", description='" + description + '\'' +
-                ", amount=" + amount +
-                ", splitAmount=" + splitAmount +
-                ", paid=" + paid +
-                ", paidByDate=" + paidByDate +
-                ", createdAt=" + createdAt +
-                '}';
+        return (
+            "Expense{" +
+            "expenseId=" +
+            expenseId +
+            ", description='" +
+            description +
+            '\'' +
+            ", amount=" +
+            amount +
+            ", splitAmount=" +
+            splitAmount +
+            ", paid=" +
+            paid +
+            ", paidByDate=" +
+            paidByDate +
+            '}'
+        );
     }
 
     @Override

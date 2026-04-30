@@ -2,12 +2,12 @@ package com.roomie.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "grocery_item")
-public class GroceryItem {
+public class GroceryItem extends BaseEntity {
 
     // TODO: Set up fk constraints
 
@@ -19,8 +19,6 @@ public class GroceryItem {
 
     private boolean isPurchased;
 
-    private Instant createdAt;
-
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
@@ -31,14 +29,9 @@ public class GroceryItem {
 
     public GroceryItem() {}
 
-    public GroceryItem(
-        String itemName,
-        boolean isPurchased,
-        Instant createdAt
-    ) {
+    public GroceryItem(String itemName, boolean isPurchased) {
         this.itemName = itemName;
         this.isPurchased = isPurchased;
-        this.createdAt = createdAt;
     }
 
     public Long getGroceryItemId() {
@@ -59,14 +52,6 @@ public class GroceryItem {
 
     public void setIsPurchased(boolean isPurchased) {
         this.isPurchased = isPurchased;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Profile getProfile() {
@@ -96,8 +81,6 @@ public class GroceryItem {
             '\'' +
             ", isPurchased=" +
             isPurchased +
-            ", createdAt=" +
-            createdAt +
             '}'
         );
     }

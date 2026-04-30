@@ -2,12 +2,12 @@ package com.roomie.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "grocery_list")
-public class GroceryList {
+public class GroceryList extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +23,17 @@ public class GroceryList {
     @JoinColumn(name = "household_id", nullable = false)
     private Household household;
 
-    @OneToMany(mappedBy = "groceryList", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "groceryList",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<GroceryItem> groceryItems;
-
-    private Instant createdAt;
 
     public GroceryList() {}
 
-    public GroceryList(String listName, Instant createdAt) {
+    public GroceryList(String listName) {
         this.listName = listName;
-        this.createdAt = createdAt;
     }
 
     public Long getGroceryListId() {
@@ -71,14 +72,6 @@ public class GroceryList {
         this.groceryItems = groceryItems;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Override
     public String toString() {
         return (
@@ -88,8 +81,6 @@ public class GroceryList {
             ", listName='" +
             listName +
             '\'' +
-            ", createdAt=" +
-            createdAt +
             '}'
         );
     }

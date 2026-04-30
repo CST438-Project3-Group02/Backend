@@ -2,12 +2,12 @@ package com.roomie.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "invite")
-public class Invite {
+public class Invite extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +24,6 @@ public class Invite {
     private Household household;
 
     private Instant expirationDate;
-
-    private Instant createdAt;
-
 
     public Long getInviteId() {
         return inviteId;
@@ -64,24 +61,23 @@ public class Invite {
         this.expirationDate = expirationDate;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Override
     public String toString() {
-        return "Invite{" +
-                "inviteId=" + inviteId +
-                ", inviteCode='" + inviteCode + '\'' +
-                ", profile=" + profile +
-                ", household=" + household +
-                ", expirationDate=" + expirationDate +
-                ", createdAt=" + createdAt +
-                '}';
+        return (
+            "Invite{" +
+            "inviteId=" +
+            inviteId +
+            ", inviteCode='" +
+            inviteCode +
+            '\'' +
+            ", profile=" +
+            profile +
+            ", household=" +
+            household +
+            ", expirationDate=" +
+            expirationDate +
+            '}'
+        );
     }
 
     @Override
@@ -96,6 +92,4 @@ public class Invite {
     public int hashCode() {
         return Objects.hash(inviteId);
     }
-
-
 }

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "household")
-public class Household {
+public class Household extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,21 +29,39 @@ public class Household {
 
     private String householdName;
 
-    private Instant createdAt;
-
-    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "household",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<ProfileHousehold> profileHouseholds;
 
-    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "household",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<Chore> chores;
 
-    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "household",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<GroceryList> groceryLists;
 
-    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "household",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<Expense> expenses;
 
-    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "household",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<Invite> invites;
 
     public Household() {}
@@ -134,14 +152,6 @@ public class Household {
 
     public void setHouseholdName(String householdName) {
         this.householdName = householdName;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
     }
 
     public List<Expense> getExpenses() {
