@@ -3,17 +3,25 @@ package com.roomie.entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "activity_comment")
 public class ActivityComment {
 
-    // TODO: fk constraints lmao
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ActivitiesCommentId;
 
     private String comment;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "activity_id", nullable = false)
+    private Activity activity;
 
     private Instant createdAt;
 
@@ -34,6 +42,22 @@ public class ActivityComment {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
     public Instant getCreatedAt() {

@@ -9,18 +9,25 @@ import java.util.Objects;
 @Table(name = "activity")
 public class Activity {
 
-    // TODO: set up FK relationships
-    // TODO: encode w/ enums
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long activityId;
 
     private Integer activityType;
 
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
+
     private Instant createdAt;
 
     private boolean isCompleted;
+
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ActivityReaction> activityReactions;
+
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ActivityComment> activityComments;
 
     public Activity() {}
 
@@ -42,6 +49,14 @@ public class Activity {
         return activityType;
     }
 
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
     public void setActivityType(Integer activityType) {
         this.activityType = activityType;
     }
@@ -56,6 +71,22 @@ public class Activity {
 
     public boolean isCompleted() {
         return isCompleted;
+    }
+
+    public List<ActivityReaction> getActivityReactions() {
+        return activityReactions;
+    }
+
+    public void setActivityReactions(List<ActivityReaction> activityReactions) {
+        this.activityReactions = activityReactions;
+    }
+
+    public List<ActivityComment> getActivityComments() {
+        return activityComments;
+    }
+
+    public void setActivityComments(List<ActivityComment> activityComments) {
+        this.activityComments = activityComments;
     }
 
     public void setCompleted(boolean isCompleted) {

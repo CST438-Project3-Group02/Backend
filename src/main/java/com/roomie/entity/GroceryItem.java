@@ -3,6 +3,7 @@ package com.roomie.entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "grocery_item")
@@ -19,6 +20,14 @@ public class GroceryItem {
     private boolean isPurchased;
 
     private Instant createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "grocery_list_id", nullable = false)
+    private GroceryList groceryList;
 
     public GroceryItem() {}
 
@@ -58,6 +67,22 @@ public class GroceryItem {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public GroceryList getGroceryList() {
+        return groceryList;
+    }
+
+    public void setGroceryList(GroceryList groceryList) {
+        this.groceryList = groceryList;
     }
 
     @Override

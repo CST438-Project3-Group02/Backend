@@ -3,6 +3,7 @@ package com.roomie.entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "chore")
@@ -12,10 +13,6 @@ public class Chore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long choreId;
 
-    // TODO: set up profile_id foreign key relationship
-
-    // TODO: set up household_id foreign key relationship
-
     private String choreName;
 
     private String choreDescription;
@@ -23,6 +20,14 @@ public class Chore {
     private Integer repeatInterval;
 
     private boolean isCompleted;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "household_id")
+    private Household household;
 
     private Instant createdAt;
 
@@ -80,6 +85,22 @@ public class Chore {
 
     public void setIsCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public Household getHousehold() {
+        return household;
+    }
+
+    public void setHousehold(Household household) {
+        this.household = household;
     }
 
     public Instant getCreatedAt() {

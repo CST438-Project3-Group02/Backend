@@ -3,18 +3,28 @@ package com.roomie.entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "grocery_list")
 public class GroceryList {
-
-    // TODO: set up fk constraints
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groceryListId;
 
     private String listName;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "household_id", nullable = false)
+    private Household household;
+
+    @OneToMany(mappedBy = "groceryList", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GroceryItem> groceryItems;
 
     private Instant createdAt;
 
@@ -35,6 +45,30 @@ public class GroceryList {
 
     public void setListName(String listName) {
         this.listName = listName;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public Household getHousehold() {
+        return household;
+    }
+
+    public void setHousehold(Household household) {
+        this.household = household;
+    }
+
+    public List<GroceryItem> getGroceryItems() {
+        return groceryItems;
+    }
+
+    public void setGroceryItems(List<GroceryItem> groceryItems) {
+        this.groceryItems = groceryItems;
     }
 
     public Instant getCreatedAt() {
