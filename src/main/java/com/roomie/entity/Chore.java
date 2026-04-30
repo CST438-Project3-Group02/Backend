@@ -12,10 +12,6 @@ public class Chore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long choreId;
 
-    // TODO: set up profile_id foreign key relationship
-
-    // TODO: set up household_id foreign key relationship
-
     private String choreName;
 
     private String choreDescription;
@@ -27,6 +23,10 @@ public class Chore {
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "household_id")
+    private Household household;
 
     private Instant createdAt;
 
@@ -92,6 +92,14 @@ public class Chore {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public Household getHousehold() {
+        return household;
+    }
+
+    public void setHousehold(Household household) {
+        this.household = household;
     }
 
     public Instant getCreatedAt() {

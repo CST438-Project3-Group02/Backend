@@ -23,6 +23,9 @@ public class Expense {
 
     private Instant createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "household_id", nullable = false)
+    private Household household;
 
     public Expense() {
 
@@ -87,6 +90,14 @@ public class Expense {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Household getHousehold() {
+        return household;
+    }
+
+    public void setHousehold(Household household) {
+        this.household = household;
     }
 
     @Override

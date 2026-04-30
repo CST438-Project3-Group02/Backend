@@ -9,9 +9,6 @@ import java.util.Objects;
 @Table(name = "household")
 public class Household {
 
-    // TODO: set up chores foreign key relationship
-    // TODO: set up profile foreign key relationship
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long householdId;
@@ -33,6 +30,18 @@ public class Household {
     private String householdName;
 
     private Instant createdAt;
+
+    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProfileHousehold> profileHouseholds;
+
+    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Chore> chores;
+
+    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GroceryList> groceryLists;
+
+    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Expense> expenses;
 
     public Household() {}
 
@@ -130,6 +139,38 @@ public class Household {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
+    public List<ProfileHousehold> getProfileHouseholds() {
+        return profileHouseholds;
+    }
+
+    public void setProfileHouseholds(List<ProfileHousehold> profileHouseholds) {
+        this.profileHouseholds = profileHouseholds;
+    }
+
+    public List<Chore> getChores() {
+        return chores;
+    }
+
+    public void setChores(List<Chore> chores) {
+        this.chores = chores;
+    }
+
+    public List<GroceryList> getGroceryLists() {
+        return groceryLists;
+    }
+
+    public void setGroceryLists(List<GroceryList> groceryLists) {
+        this.groceryLists = groceryLists;
     }
 
     @Override

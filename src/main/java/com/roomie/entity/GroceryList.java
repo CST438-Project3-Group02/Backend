@@ -8,8 +8,6 @@ import java.util.Objects;
 @Table(name = "grocery_list")
 public class GroceryList {
 
-    // TODO: set up fk constraints
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groceryListId;
@@ -19,6 +17,10 @@ public class GroceryList {
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "household_id", nullable = false)
+    private Household household;
 
     private Instant createdAt;
 
@@ -47,6 +49,14 @@ public class GroceryList {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public Household getHousehold() {
+        return household;
+    }
+
+    public void setHousehold(Household household) {
+        this.household = household;
     }
 
     public Instant getCreatedAt() {
