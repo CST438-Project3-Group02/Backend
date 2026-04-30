@@ -1,7 +1,6 @@
 package com.roomie.entity;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.time.Instant;
 
 @MappedSuperclass
