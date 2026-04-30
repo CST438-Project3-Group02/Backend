@@ -2,12 +2,13 @@ package com.roomie.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "profile_household")
-public class ProfileHousehold {
+public class ProfileHousehold extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long profileHouseholdId;
@@ -15,8 +16,6 @@ public class ProfileHousehold {
     private Integer privs;
 
     private Integer payInterval;
-
-    private Instant createdAt;
 
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
@@ -26,15 +25,18 @@ public class ProfileHousehold {
     @JoinColumn(name = "household_id", nullable = false)
     private Household household;
 
-    public ProfileHousehold() {
+    public ProfileHousehold() {}
 
-    }
-
-    public ProfileHousehold(Long profileHouseholdId, Integer privs, Integer payInterval, Instant createdAt, Profile profile, Household household) {
+    public ProfileHousehold(
+        Long profileHouseholdId,
+        Integer privs,
+        Integer payInterval,
+        Profile profile,
+        Household household
+    ) {
         this.profileHouseholdId = profileHouseholdId;
         this.privs = privs;
         this.payInterval = payInterval;
-        this.createdAt = createdAt;
         this.profile = profile;
         this.household = household;
     }
@@ -51,20 +53,12 @@ public class ProfileHousehold {
         return payInterval;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
     public void setPrivs(Integer privs) {
         this.privs = privs;
     }
 
     public void setPayInterval(Integer payInterval) {
         this.payInterval = payInterval;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Profile getProfile() {
@@ -85,14 +79,20 @@ public class ProfileHousehold {
 
     @Override
     public String toString() {
-        return "ProfileHousehold{" +
-                "profileHouseholdId=" + profileHouseholdId +
-                ", privs=" + privs +
-                ", payInterval=" + payInterval +
-                ", createdAt=" + createdAt +
-                ", profile=" + profile +
-                ", household=" + household +
-                '}';
+        return (
+            "ProfileHousehold{" +
+            "profileHouseholdId=" +
+            profileHouseholdId +
+            ", privs=" +
+            privs +
+            ", payInterval=" +
+            payInterval +
+            ", profile=" +
+            profile +
+            ", household=" +
+            household +
+            '}'
+        );
     }
 
     @Override

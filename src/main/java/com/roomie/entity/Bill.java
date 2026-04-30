@@ -2,12 +2,12 @@ package com.roomie.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "bill")
-public class Bill {
+public class Bill extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,6 @@ public class Bill {
 
     private Instant payByDate;
 
-    private Instant createdAt;
-
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
@@ -31,15 +29,19 @@ public class Bill {
     @JoinColumn(name = "expense_id", nullable = false)
     private Expense expense;
 
-    public Bill() {
-    }
+    public Bill() {}
 
-    public Bill(String description, Double amount, Boolean paid, Instant payByDate, Instant createdAt, Profile profile) {
+    public Bill(
+        String description,
+        Double amount,
+        Boolean paid,
+        Instant payByDate,
+        Profile profile
+    ) {
         this.description = description;
         this.amount = amount;
         this.paid = paid;
         this.payByDate = payByDate;
-        this.createdAt = createdAt;
         this.profile = profile;
     }
 
@@ -79,14 +81,6 @@ public class Bill {
         this.payByDate = payByDate;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public Profile getProfile() {
         return profile;
     }
@@ -105,15 +99,23 @@ public class Bill {
 
     @Override
     public String toString() {
-        return "Bill{" +
-                "billId=" + billId +
-                ", description='" + description + '\'' +
-                ", amount=" + amount +
-                ", paid=" + paid +
-                ", payByDate=" + payByDate +
-                ", createdAt=" + createdAt +
-                ", profile=" + profile +
-                '}';
+        return (
+            "Bill{" +
+            "billId=" +
+            billId +
+            ", description='" +
+            description +
+            '\'' +
+            ", amount=" +
+            amount +
+            ", paid=" +
+            paid +
+            ", payByDate=" +
+            payByDate +
+            ", profile=" +
+            profile +
+            '}'
+        );
     }
 
     @Override

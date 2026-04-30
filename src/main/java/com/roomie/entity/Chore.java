@@ -2,12 +2,12 @@ package com.roomie.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "chore")
-public class Chore {
+public class Chore extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +29,6 @@ public class Chore {
     @JoinColumn(name = "household_id")
     private Household household;
 
-    private Instant createdAt;
-
     private Instant completeBy;
 
     public Chore() {}
@@ -40,14 +38,12 @@ public class Chore {
         String choreDescription,
         Integer repeatInterval,
         boolean isCompleted,
-        Instant createdAt,
         Instant completeBy
     ) {
         this.choreName = choreName;
         this.choreDescription = choreDescription;
         this.repeatInterval = repeatInterval;
         this.isCompleted = isCompleted;
-        this.createdAt = createdAt;
         this.completeBy = completeBy;
     }
 
@@ -103,14 +99,6 @@ public class Chore {
         this.household = household;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public Instant getCompleteBy() {
         return completeBy;
     }
@@ -135,8 +123,6 @@ public class Chore {
             repeatInterval +
             ", isCompleted=" +
             isCompleted +
-            ", createdAt=" +
-            createdAt +
             ", completeBy=" +
             completeBy +
             '}'
