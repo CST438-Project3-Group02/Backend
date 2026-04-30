@@ -25,7 +25,7 @@ public class Profile {
 
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) //done
     private List<ProfileHousehold> profileHouseholds;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -40,15 +40,14 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ActivityComment> activityComments;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) // done
     private List<ActivitiesReaction> activitiesReactions;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) // done
     private List<Activity> activities;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) //done
     private List<Chore> chores;
-
 
     public Profile() {}
 
@@ -112,6 +111,70 @@ public class Profile {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<ProfileHousehold> getProfileHouseholds() {
+        return profileHouseholds;
+    }
+
+    public void setProfileHouseholds(List<ProfileHousehold> profileHouseholds) {
+        this.profileHouseholds = profileHouseholds;
+    }
+
+    public List<Chore> getChores() {
+        return chores;
+    }
+
+    public void setChores(List<Chore> chores) {
+        this.chores = chores;
+    }
+
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
+    }
+
+    public List<ActivitiesReaction> getActivitiesReactions() {
+        return activitiesReactions;
+    }
+
+    public void setActivitiesReactions(List<ActivitiesReaction> activitiesReactions) {
+        this.activitiesReactions = activitiesReactions;
+    }
+
+    public List<ActivityComment> getActivityComments() {
+        return activityComments;
+    }
+
+    public void setActivityComments(List<ActivityComment> activityComments) {
+        this.activityComments = activityComments;
+    }
+
+    public List<GroceryItem> getGroceryItems() {
+        return groceryItems;
+    }
+
+    public void setGroceryItems(List<GroceryItem> groceryItems) {
+        this.groceryItems = groceryItems;
+    }
+
+    public List<GroceryList> getGroceryLists() {
+        return groceryLists;
+    }
+
+    public void setGroceryLists(List<GroceryList> groceryLists) {
+        this.groceryLists = groceryLists;
+    }
+
+    public List<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
     }
 
     @Override
