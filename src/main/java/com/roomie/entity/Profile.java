@@ -50,6 +50,9 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true) //done
     private List<Chore> chores;
 
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invite> invites;
+
     public Profile() {}
 
     public Profile(
@@ -176,6 +179,14 @@ public class Profile {
 
     public void setBills(List<Bill> bills) {
         this.bills = bills;
+    }
+
+    public List<Invite> getInvites() {
+        return invites;
+    }
+
+    public void setInvites(List<Invite> invites) {
+        this.invites = invites;
     }
 
     @Override

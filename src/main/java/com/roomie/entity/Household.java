@@ -43,6 +43,9 @@ public class Household {
     @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses;
 
+    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invite> invites;
+
     public Household() {}
 
     public Household(
@@ -171,6 +174,14 @@ public class Household {
 
     public void setGroceryLists(List<GroceryList> groceryLists) {
         this.groceryLists = groceryLists;
+    }
+
+    public List<Invite> getInvites() {
+        return invites;
+    }
+
+    public void setInvites(List<Invite> invites) {
+        this.invites = invites;
     }
 
     @Override
