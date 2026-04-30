@@ -8,8 +8,6 @@ import java.util.Objects;
 @Table(name = "activity_reaction")
 public class ActivityReaction {
 
-    // TODO: set up fk constraints
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long activitiesReactionId;
@@ -19,6 +17,10 @@ public class ActivityReaction {
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "activity_id")
+    private Activity activity;
 
     private Instant createdAt;
 
@@ -47,6 +49,14 @@ public class ActivityReaction {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
     public Instant getCreatedAt() {
