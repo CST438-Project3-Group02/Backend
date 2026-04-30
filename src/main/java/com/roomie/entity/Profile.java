@@ -8,9 +8,6 @@ import java.util.Objects;
 @Table(name = "profile")
 public class Profile {
 
-    // TODO: set up userId foreign key relationship w/ oauth table
-    // TODO: set up householdId foreign key relationship
-    // TODO: set up all fk relationships lmao
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long profileId;
@@ -21,10 +18,37 @@ public class Profile {
 
     private Integer age;
 
+    private String profilePicUrl;
+
     @Column(unique = true, nullable = false)
     private String oauth_id;
 
     private Instant createdAt;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProfileHousehold> profileHouseholds;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bill> bills;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GroceryItem> groceryItems;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GroceryList> groceryLists;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ActivityComment> activityComments;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ActivitiesReaction> activitiesReactions;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Activity> activities;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Chore> chores;
+
 
     public Profile() {}
 
@@ -60,6 +84,14 @@ public class Profile {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public String getProfilePicUrl() {
+        return profilePicUrl;
+    }
+
+    public void setProfilePicUrl(String profilePicUrl) {
+        this.profilePicUrl = profilePicUrl;
     }
 
     public String getEmail() {

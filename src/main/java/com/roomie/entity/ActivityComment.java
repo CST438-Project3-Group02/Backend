@@ -15,6 +15,10 @@ public class ActivityComment {
 
     private String comment;
 
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
+
     private Instant createdAt;
 
     public ActivityComment() {}
@@ -34,6 +38,14 @@ public class ActivityComment {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public Instant getCreatedAt() {

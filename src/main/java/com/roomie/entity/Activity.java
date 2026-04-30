@@ -18,6 +18,10 @@ public class Activity {
 
     private Integer activityType;
 
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
+
     private Instant createdAt;
 
     private boolean isCompleted;
@@ -40,6 +44,14 @@ public class Activity {
 
     public Integer getActivityType() {
         return activityType;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public void setActivityType(Integer activityType) {

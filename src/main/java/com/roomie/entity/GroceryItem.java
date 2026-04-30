@@ -20,6 +20,10 @@ public class GroceryItem {
 
     private Instant createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
+
     public GroceryItem() {}
 
     public GroceryItem(
@@ -58,6 +62,14 @@ public class GroceryItem {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     @Override

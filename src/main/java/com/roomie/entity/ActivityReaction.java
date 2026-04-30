@@ -16,6 +16,10 @@ public class ActivityReaction {
 
     private String reaction;
 
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
+
     private Instant createdAt;
 
     public ActivityReaction() {}
@@ -35,6 +39,14 @@ public class ActivityReaction {
 
     public void setReaction(String reaction) {
         this.reaction = reaction;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public Instant getCreatedAt() {

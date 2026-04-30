@@ -16,6 +16,10 @@ public class GroceryList {
 
     private String listName;
 
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
+
     private Instant createdAt;
 
     public GroceryList() {}
@@ -35,6 +39,14 @@ public class GroceryList {
 
     public void setListName(String listName) {
         this.listName = listName;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public Instant getCreatedAt() {
