@@ -1,10 +1,8 @@
 package com.roomie.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import tools.jackson.databind.ser.jdk.NumberSerializers.Base;
 
 @Entity
 @Table(name = "profile")
@@ -22,14 +20,14 @@ public class Profile extends BaseEntity {
 
     private String profilePicUrl;
 
-    @Column(unique = true, nullable = false)
-    private String oauth_id;
+    @Column(name = "oauth_id", unique = true, nullable = false)
+    private String oauthId;
 
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
         orphanRemoval = true
-    ) //done
+    )
     private List<ProfileHousehold> profileHouseholds;
 
     @OneToMany(
@@ -64,21 +62,21 @@ public class Profile extends BaseEntity {
         mappedBy = "profile",
         cascade = CascadeType.ALL,
         orphanRemoval = true
-    ) // done
+    )
     private List<ActivityReaction> activityReactions;
 
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
         orphanRemoval = true
-    ) // done
+    )
     private List<Activity> activities;
 
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
         orphanRemoval = true
-    ) //done
+    )
     private List<Chore> chores;
 
     @OneToMany(
@@ -90,11 +88,11 @@ public class Profile extends BaseEntity {
 
     public Profile() {}
 
-    public Profile(String name, String email, Integer age, String oauth_id) {
+    public Profile(String name, String email, Integer age, String oauthId) {
         this.name = name;
         this.email = email;
         this.age = age;
-        this.oauth_id = oauth_id;
+        this.oauthId = oauthId;
     }
 
     public Long getProfileId() {
@@ -133,8 +131,8 @@ public class Profile extends BaseEntity {
         this.email = email;
     }
 
-    public String getOauth_id() {
-        return oauth_id;
+    public String getOauthId() {
+        return oauthId;
     }
 
     public List<ProfileHousehold> getProfileHouseholds() {

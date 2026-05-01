@@ -1,15 +1,11 @@
 package com.roomie.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "grocery_item")
 public class GroceryItem extends BaseEntity {
-
-    // TODO: Set up fk constraints
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
