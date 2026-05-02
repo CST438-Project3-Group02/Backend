@@ -3,6 +3,8 @@ package com.roomie.controller;
 import com.roomie.entity.Household;
 import com.roomie.service.HouseholdService;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +20,13 @@ public class HouseholdController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Household>> getAllHouseholds() {
-        return ResponseEntity.ok(householdService.getAllHouseholds());
+    public ResponseEntity<List<Household>> getAllHouseholdsByProfile(
+            @RequestParam String profileId
+    ) {
+        System.out.println("PROFILE ID: " + profileId);
+        return ResponseEntity.ok(
+                householdService.getHouseholdsForUser(profileId)
+        );
     }
 
     @GetMapping("/{id}")

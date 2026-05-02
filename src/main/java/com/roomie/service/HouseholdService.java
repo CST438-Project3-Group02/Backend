@@ -16,13 +16,13 @@ public class HouseholdService {
         this.householdRepository = householdRepository;
     }
 
-    public List<Household> getAllHouseholds() {
-        return householdRepository.findAll();
-    }
+    public List<Household> getAllHouseholds() { return householdRepository.findAll(); }
 
     public Optional<Household> getHouseholdById(Long id) {
         return householdRepository.findById(id);
     }
+
+    public List<Household> getHouseholdsForUser(String id) { return householdRepository.findByProfileHouseholds_Profile_OauthId(id); }
 
     public Household createHousehold(Household household) {
         return householdRepository.save(household);
