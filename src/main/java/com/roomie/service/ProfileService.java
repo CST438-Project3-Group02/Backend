@@ -45,9 +45,7 @@ public class ProfileService {
         return profileRepository.findById(id);
     }
 
-    public Optional<Profile> getProfileByOauthId(String oauthId) {
-        return profileRepository.findByOauthId(oauthId);
-    }
+    public Optional<Profile> getProfileByOauthId(String oauthId) { return profileRepository.findByOauthId(oauthId); }
 
     public Profile createProfile(Profile profile) {
         return profileRepository.save(profile);

@@ -1,9 +1,9 @@
 package com.roomie.controller;
 
+import com.roomie.dto.HouseholdResponse;
 import com.roomie.entity.Household;
 import com.roomie.service.HouseholdService;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,15 @@ public class HouseholdController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Household>> getAllHouseholdsByProfile(
-            @RequestParam String profileId
+    public ResponseEntity<List<HouseholdResponse>> getAllHouseholdsByProfileId(
+            @RequestParam Long profileId
     ) {
-        System.out.println("PROFILE ID: " + profileId);
-        return ResponseEntity.ok(
-                householdService.getHouseholdsForUser(profileId)
-        );
+        List<HouseholdResponse> households = householdService.getHouseholdsForUser(profileId)
+                .stream()
+                .map(HouseholdResponse::new)
+                .toList();
+
+        return ResponseEntity.ok(households);
     }
 
     @GetMapping("/{id}")
@@ -39,10 +41,12 @@ public class HouseholdController {
 
     @PostMapping
     public ResponseEntity<Household> createHousehold(
-        @RequestBody Household household
+        @RequestBody Household household,
+        @RequestParam Long profileId
     ) {
         Household createdHousehold = householdService.createHousehold(
-            household
+            household,
+            profileId
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(createdHousehold);
     }

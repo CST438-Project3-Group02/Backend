@@ -1,5 +1,6 @@
 package com.roomie.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +11,7 @@ public class Profile extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("profileId")
     private Long profileId;
 
     private String name;
@@ -95,6 +97,7 @@ public class Profile extends BaseEntity {
         this.oauthId = oauthId;
     }
 
+    @JsonProperty("profileId")
     public Long getProfileId() {
         return profileId;
     }

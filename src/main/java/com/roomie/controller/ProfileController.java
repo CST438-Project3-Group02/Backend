@@ -1,5 +1,6 @@
 package com.roomie.controller;
 
+import com.roomie.dto.ProfileResponse;
 import com.roomie.entity.Profile;
 import com.roomie.service.ProfileService;
 import org.springframework.http.HttpStatus;
@@ -38,9 +39,9 @@ public class ProfileController {
     }
 
     @GetMapping("/oauth/{oauthId}")
-    public ResponseEntity<Profile> getProfileByOauthId(@PathVariable String oauthId) {
+    public ResponseEntity<ProfileResponse> getProfileByOauthId(@PathVariable String oauthId) {
         return profileService.getProfileByOauthId(oauthId)
-                .map(ResponseEntity::ok)
+                .map(profile -> ResponseEntity.ok(new ProfileResponse(profile)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface HouseholdRepository extends JpaRepository<Household, Long> {
-    List<Household> findByProfileHouseholds_Profile_OauthId(String oauthId);
+    List<Household> findByProfileHouseholds_Profile_ProfileId(Long profileId);
 }

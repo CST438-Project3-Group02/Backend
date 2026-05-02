@@ -1,19 +1,31 @@
 package com.roomie.service;
 
 import com.roomie.entity.Household;
+import com.roomie.entity.Profile;
+import com.roomie.entity.ProfileHousehold;
 import com.roomie.exception.ResourceNotFoundException;
 import com.roomie.repository.HouseholdRepository;
 import java.util.List;
 import java.util.Optional;
+
+import com.roomie.repository.ProfileHouseholdRepository;
+import com.roomie.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HouseholdService {
 
     private final HouseholdRepository householdRepository;
+    private final ProfileRepository profileRepository;
+    private final ProfileHouseholdRepository profileHouseholdRepository;
 
-    public HouseholdService(HouseholdRepository householdRepository) {
+    public HouseholdService(
+            HouseholdRepository householdRepository,
+            ProfileRepository profileRepository,
+            ProfileHouseholdRepository profileHouseholdRepository) {
         this.householdRepository = householdRepository;
+        this.profileRepository = profileRepository;
+        this.profileHouseholdRepository = profileHouseholdRepository;
     }
 
     public List<Household> getAllHouseholds() { return householdRepository.findAll(); }
@@ -22,10 +34,26 @@ public class HouseholdService {
         return householdRepository.findById(id);
     }
 
-    public List<Household> getHouseholdsForUser(String id) { return householdRepository.findByProfileHouseholds_Profile_OauthId(id); }
+    public List<Household> getHouseholdsForUser(Long id) { return householdRepository.findByProfileHouseholds_Profile_ProfileId(id); }
 
-    public Household createHousehold(Household household) {
-        return householdRepository.save(household);
+    public Household createHousehold(Household household, Long profileId) {
+        // Save the household to household repo
+        Household savedHousehold = householdRepository.save(household);
+
+        // fetch profile from profile repo
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
+
+        // set relationship between profile to household
+        ProfileHousehold membership = new ProfileHousehold();
+        membership.setHousehold(savedHousehold);
+        membership.setProfile(profile);
+        membership.setPrivs(1); // set user to admin
+        membership.setPayInterval(null);
+
+        profileHouseholdRepository.save(membership);
+
+        return savedHousehold;
     }
 
     public Household updateHousehold(Long id, Household updatedHousehold) {
