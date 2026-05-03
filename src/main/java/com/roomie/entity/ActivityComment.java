@@ -1,5 +1,6 @@
 package com.roomie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Objects;
 
@@ -13,10 +14,12 @@ public class ActivityComment extends BaseEntity {
 
     private String comment;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "activity_id", nullable = false)
     private Activity activity;

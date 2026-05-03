@@ -1,5 +1,6 @@
 package com.roomie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
@@ -20,10 +21,12 @@ public class Chore extends BaseEntity {
 
     private boolean isCompleted;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "household_id")
     private Household household;

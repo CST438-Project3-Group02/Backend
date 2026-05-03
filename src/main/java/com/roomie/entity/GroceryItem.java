@@ -1,5 +1,6 @@
 package com.roomie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Objects;
 
@@ -15,10 +16,12 @@ public class GroceryItem extends BaseEntity {
 
     private boolean isPurchased;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "grocery_list_id", nullable = false)
     private GroceryList groceryList;

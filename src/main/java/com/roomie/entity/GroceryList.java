@@ -1,5 +1,6 @@
 package com.roomie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -14,14 +15,17 @@ public class GroceryList extends BaseEntity {
 
     private String listName;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "household_id", nullable = false)
     private Household household;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "groceryList",
         cascade = CascadeType.ALL,

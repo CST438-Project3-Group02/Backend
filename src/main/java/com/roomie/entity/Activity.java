@@ -1,5 +1,6 @@
 package com.roomie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -14,9 +15,15 @@ public class Activity extends BaseEntity {
 
     private Integer activityType;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "household_id")
+    private Household household;
 
     private boolean isCompleted;
 
@@ -83,6 +90,14 @@ public class Activity extends BaseEntity {
 
     public void setCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
+    }
+
+    public Household getHousehold() {
+        return household;
+    }
+
+    public void setHousehold(Household household) {
+        this.household = household;
     }
 
     @Override

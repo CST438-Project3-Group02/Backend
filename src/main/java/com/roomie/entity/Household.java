@@ -1,5 +1,6 @@
 package com.roomie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +29,15 @@ public class Household extends BaseEntity {
 
     private String householdName;
 
+    @JsonIgnore
+    @OneToMany(
+        mappedBy = "household",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Activity> activities;
+
+    @JsonIgnore
     @OneToMany(
         mappedBy = "household",
         cascade = CascadeType.ALL,
@@ -35,6 +45,7 @@ public class Household extends BaseEntity {
     )
     private List<ProfileHousehold> profileHouseholds;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "household",
         cascade = CascadeType.ALL,
@@ -42,6 +53,7 @@ public class Household extends BaseEntity {
     )
     private List<Chore> chores;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "household",
         cascade = CascadeType.ALL,
@@ -49,6 +61,7 @@ public class Household extends BaseEntity {
     )
     private List<GroceryList> groceryLists;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "household",
         cascade = CascadeType.ALL,
@@ -56,6 +69,7 @@ public class Household extends BaseEntity {
     )
     private List<Expense> expenses;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "household",
         cascade = CascadeType.ALL,
@@ -191,6 +205,14 @@ public class Household extends BaseEntity {
 
     public void setInvites(List<Invite> invites) {
         this.invites = invites;
+    }
+
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
     }
 
     @Override

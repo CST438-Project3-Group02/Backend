@@ -1,5 +1,6 @@
 package com.roomie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +24,7 @@ public class Profile extends BaseEntity {
     @Column(name = "oauth_id", unique = true, nullable = false)
     private String oauthId;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
@@ -30,6 +32,7 @@ public class Profile extends BaseEntity {
     )
     private List<ProfileHousehold> profileHouseholds;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
@@ -37,6 +40,7 @@ public class Profile extends BaseEntity {
     )
     private List<Bill> bills;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
@@ -44,6 +48,7 @@ public class Profile extends BaseEntity {
     )
     private List<GroceryItem> groceryItems;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
@@ -51,6 +56,7 @@ public class Profile extends BaseEntity {
     )
     private List<GroceryList> groceryLists;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
@@ -58,6 +64,7 @@ public class Profile extends BaseEntity {
     )
     private List<ActivityComment> activityComments;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
@@ -65,6 +72,7 @@ public class Profile extends BaseEntity {
     )
     private List<ActivityReaction> activityReactions;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
@@ -72,6 +80,7 @@ public class Profile extends BaseEntity {
     )
     private List<Activity> activities;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
@@ -79,6 +88,7 @@ public class Profile extends BaseEntity {
     )
     private List<Chore> chores;
 
+    @JsonIgnore
     @OneToMany(
         mappedBy = "profile",
         cascade = CascadeType.ALL,
