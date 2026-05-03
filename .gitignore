@@ -103,4 +103,3 @@ spring.log
 *~
 # Docker
 docker-compose.yml
-.dockerignore
