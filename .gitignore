@@ -101,3 +101,6 @@ spring.log
 *.swp
 *.swo
 *~
+# Docker
+docker-compose.yml
+.dockerignore
