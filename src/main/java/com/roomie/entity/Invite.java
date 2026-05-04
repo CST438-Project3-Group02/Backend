@@ -29,8 +29,8 @@ public class Invite extends BaseEntity {
     @Override
     protected void onCreate() {
         super.onCreate();
-        if (expirationDate == null) { // set expirationDate to 1 hour in advance (default)
-            expirationDate = Instant.now().plus(Duration.ofHours(1));
+        if (expirationDate == null) { // set expirationDate to 15 mins by default
+            expirationDate = Instant.now().plus(Duration.ofMinutes(15));
         }
     }
 

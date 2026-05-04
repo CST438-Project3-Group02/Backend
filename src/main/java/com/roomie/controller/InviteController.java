@@ -34,4 +34,12 @@ public class InviteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @GetMapping
+    public ResponseEntity<InviteDTO> getInviteDetails(
+            @RequestParam String inviteCode
+    ) {
+        return ResponseEntity.ok(inviteService.getInvite(inviteCode));
+    }
+
+
 }
