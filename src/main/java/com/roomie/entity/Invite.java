@@ -1,6 +1,8 @@
 package com.roomie.entity;
 
 import jakarta.persistence.*;
+
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -23,6 +25,14 @@ public class Invite extends BaseEntity {
     private Household household;
 
     private Instant expirationDate;
+
+    @Override
+    protected void onCreate() {
+        super.onCreate();
+        if (expirationDate == null) { // set expirationDate to 1 hour in advance (default)
+            expirationDate = Instant.now().plus(Duration.ofHours(1));
+        }
+    }
 
     public Long getInviteId() {
         return inviteId;
