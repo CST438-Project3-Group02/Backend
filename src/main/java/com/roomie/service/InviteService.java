@@ -56,7 +56,7 @@ public class InviteService {
 
     public InviteDTO getInvite(String inviteCode) {
         Invite invite = inviteRepository.findByInviteCode(inviteCode)
-                .orElseThrow(() -> new ResourceNotFoundException("Invite", inviteCode));
+                .orElseThrow(() -> new ResourceNotFoundException("Invite", null));
 
         if (invite.getExpirationDate().isBefore(Instant.now())) {
             throw new InviteExpiredException("This invite link has expired");
