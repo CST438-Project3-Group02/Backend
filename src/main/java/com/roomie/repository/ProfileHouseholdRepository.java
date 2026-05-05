@@ -2,6 +2,8 @@ package com.roomie.repository;
 
 import com.roomie.entity.ProfileHousehold;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +13,6 @@ public interface ProfileHouseholdRepository
 {
     List<ProfileHousehold> findByProfile_ProfileId(Long profileId);
     List<ProfileHousehold> findByHousehold_HouseholdId(Long householdId);
+    Optional<ProfileHousehold> findByProfileProfileIdAndHouseholdHouseholdId(Long profileId, Long householdId);
+
 }

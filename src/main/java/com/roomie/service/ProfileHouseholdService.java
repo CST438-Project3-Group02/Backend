@@ -34,6 +34,11 @@ public class ProfileHouseholdService {
             .orElseThrow(() -> new ResourceNotFoundException("Membership", id));
     }
 
+    public ProfileHousehold getMembershipByProfileAndHousehold(Long profileId, Long householdId) {
+        return profileHouseholdRepository.findByProfileProfileIdAndHouseholdHouseholdId(profileId, householdId)
+                .orElseThrow(() -> new ResourceNotFoundException("Membership", profileId));
+    }
+
     public ProfileHousehold addMember(
         Long profileId,
         Long householdId,
