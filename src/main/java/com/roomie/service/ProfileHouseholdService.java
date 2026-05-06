@@ -3,6 +3,7 @@ package com.roomie.service;
 import com.roomie.entity.Household;
 import com.roomie.entity.Profile;
 import com.roomie.entity.ProfileHousehold;
+import com.roomie.enums.ActivityType;
 import com.roomie.exception.ResourceNotFoundException;
 import com.roomie.repository.HouseholdRepository;
 import com.roomie.repository.ProfileHouseholdRepository;
@@ -17,15 +18,18 @@ public class ProfileHouseholdService {
     private final ProfileHouseholdRepository profileHouseholdRepository;
     private final ProfileRepository profileRepository;
     private final HouseholdRepository householdRepository;
+    private final ActivityEventService activityEventService;
 
     public ProfileHouseholdService(
         ProfileHouseholdRepository profileHouseholdRepository,
         ProfileRepository profileRepository,
-        HouseholdRepository householdRepository
+        HouseholdRepository householdRepository,
+        ActivityEventService activityEventService
     ) {
         this.profileHouseholdRepository = profileHouseholdRepository;
         this.profileRepository = profileRepository;
         this.householdRepository = householdRepository;
+        this.activityEventService = activityEventService;
     }
 
     public ProfileHousehold getMembershipById(Long id) {
@@ -34,9 +38,18 @@ public class ProfileHouseholdService {
             .orElseThrow(() -> new ResourceNotFoundException("Membership", id));
     }
 
-    public ProfileHousehold getMembershipByProfileAndHousehold(Long profileId, Long householdId) {
-        return profileHouseholdRepository.findByProfileProfileIdAndHouseholdHouseholdId(profileId, householdId)
-                .orElseThrow(() -> new ResourceNotFoundException("Membership", profileId));
+    public ProfileHousehold getMembershipByProfileAndHousehold(
+        Long profileId,
+        Long householdId
+    ) {
+        return profileHouseholdRepository
+            .findByProfileProfileIdAndHouseholdHouseholdId(
+                profileId,
+                householdId
+            )
+            .orElseThrow(() ->
+                new ResourceNotFoundException("Membership", profileId)
+            );
     }
 
     public ProfileHousehold addMember(
@@ -62,6 +75,12 @@ public class ProfileHouseholdService {
         membership.setHousehold(household);
         membership.setPrivs(privs);
         membership.setPayInterval(payInterval);
+        activityEventService.log(
+            profileId,
+            householdId,
+            ActivityType.MEMBER_JOINED,
+            false
+        );
 
         return profileHouseholdRepository.save(membership);
     }
@@ -78,9 +97,20 @@ public class ProfileHouseholdService {
     }
 
     public void removeMember(Long id) {
+        ProfileHousehold membership = profileHouseholdRepository
+            .findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Membership", id));
         if (!profileHouseholdRepository.existsById(id)) {
             throw new ResourceNotFoundException("Membership", id);
         }
+        Long profileId = membership.getProfile().getProfileId();
+        Long householdId = membership.getHousehold().getHouseholdId();
         profileHouseholdRepository.deleteById(id);
+        activityEventService.log(
+            profileId,
+            householdId,
+            ActivityType.MEMBER_LEFT,
+            false
+        );
     }
 }

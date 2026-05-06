@@ -3,6 +3,7 @@ package com.roomie.service;
 import com.roomie.entity.GroceryItem;
 import com.roomie.entity.GroceryList;
 import com.roomie.entity.Profile;
+import com.roomie.enums.ActivityType;
 import com.roomie.exception.ResourceNotFoundException;
 import com.roomie.repository.GroceryItemRepository;
 import com.roomie.repository.GroceryListRepository;
@@ -17,14 +18,18 @@ public class GroceryItemService {
     private final GroceryListRepository groceryListRepository;
     private final ProfileRepository profileRepository;
 
+    // private final ActivityEventService activityEventService;
+
     public GroceryItemService(
         GroceryItemRepository groceryItemRepository,
         GroceryListRepository groceryListRepository,
         ProfileRepository profileRepository
+        // ActivityEventService activityEventService
     ) {
         this.groceryItemRepository = groceryItemRepository;
         this.groceryListRepository = groceryListRepository;
         this.profileRepository = profileRepository;
+        // this.activityEventService = activityEventService;
     }
 
     public List<GroceryItem> getAllGroceryItems() {
@@ -72,6 +77,12 @@ public class GroceryItemService {
         GroceryItem groceryItem = new GroceryItem(itemName, false);
         groceryItem.setProfile(profile);
         groceryItem.setGroceryList(groceryList);
+        // activityEventService.log(
+        //     profileId,
+        //     groceryList.getHousehold().getHouseholdId(),
+        //     ActivityType.GROCERY_ITEM_ADDED,
+        //     false
+        // );
         return groceryItemRepository.save(groceryItem);
     }
 
@@ -83,6 +94,14 @@ public class GroceryItemService {
             );
         existing.setItemName(updatedItem.getItemName());
         existing.setIsPurchased(updatedItem.isPurchased());
+        // if (updatedItem.isPurchased()) {
+        //     activityEventService.log(
+        //         existing.getProfile().getProfileId(),
+        //         existing.getGroceryList().getHousehold().getHouseholdId(),
+        //         ActivityType.GROCERY_ITEM_PURCHASED,
+        //         true
+        //     );
+        // }
         return groceryItemRepository.save(existing);
     }
 
