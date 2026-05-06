@@ -29,6 +29,8 @@ public class Activity extends BaseEntity {
 
     private String postComment;
 
+    private String picUrl;
+
     @OneToMany(
         mappedBy = "activity",
         cascade = CascadeType.ALL,
@@ -108,6 +110,14 @@ public class Activity extends BaseEntity {
 
     public void setPostComment(String postComment) {
         this.postComment = postComment;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     @Override

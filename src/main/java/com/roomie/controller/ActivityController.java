@@ -77,6 +77,9 @@ public class ActivityController {
         String postComment = payload.containsKey("postComment")
             ? payload.get("postComment").toString()
             : null;
+        String picUrl = payload.containsKey("picUrl")
+            ? payload.get("picUrl").toString()
+            : null;
         Integer activityType = Integer.valueOf(
             payload.get("activityType").toString()
         );
@@ -84,7 +87,8 @@ public class ActivityController {
             profileId,
             householdId,
             activityType,
-            postComment
+            postComment,
+            picUrl
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(
             activityService.toDTO(activity)

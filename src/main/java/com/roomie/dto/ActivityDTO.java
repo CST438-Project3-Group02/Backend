@@ -12,6 +12,7 @@ public class ActivityDTO {
     private boolean isCompleted;
     private Profile profile;
     private String postComment;
+    private String picUrl;
 
     private List<ActivityComment> activityComments;
     private List<ActivityReaction> activityReactions;
@@ -21,13 +22,15 @@ public class ActivityDTO {
         Integer activityType,
         boolean isCompleted,
         Profile profile,
-        String postComment
+        String postComment,
+        String picUrl
     ) {
         this.activityId = activityId;
         this.activityType = activityType;
         this.isCompleted = isCompleted;
         this.profile = profile;
         this.postComment = postComment;
+        this.picUrl = picUrl;
     }
 
     public Long getActivityId() {
@@ -48,6 +51,10 @@ public class ActivityDTO {
 
     public String getPostComment() {
         return postComment;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
     }
 
     public List<ActivityComment> getActivityComments() {

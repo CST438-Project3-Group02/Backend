@@ -35,7 +35,8 @@ public class ActivityService {
             activity.getActivityType(),
             activity.isCompleted(),
             activity.getProfile(),
-            activity.getPostComment()
+            activity.getPostComment(),
+            activity.getPicUrl()
         );
     }
 
@@ -108,7 +109,8 @@ public class ActivityService {
         Long profileId,
         Long householdId,
         Integer activityType,
-        String postComment
+        String postComment,
+        String picUrl
     ) {
         Profile profile = profileRepository
             .findById(profileId)
@@ -124,7 +126,8 @@ public class ActivityService {
         Activity activity = new Activity(activityType, false);
         activity.setProfile(profile);
         activity.setHousehold(household);
-        activity.getActivityComments();
+        activity.setPostComment(postComment);
+        activity.setPicUrl(picUrl);
         return activityRepository.save(activity);
     }
 
