@@ -4,6 +4,7 @@ import com.roomie.dto.ChoreDTO;
 import com.roomie.entity.Chore;
 import com.roomie.entity.Household;
 import com.roomie.entity.Profile;
+import com.roomie.enums.ActivityType;
 import com.roomie.exception.ResourceNotFoundException;
 import com.roomie.repository.ChoreRepository;
 import com.roomie.repository.HouseholdRepository;
@@ -18,15 +19,18 @@ public class ChoreService {
     private final ChoreRepository choreRepository;
     private final ProfileRepository profileRepository;
     private final HouseholdRepository householdRepository;
+    private final ActivityEventService activityEventService;
 
     public ChoreService(
         ChoreRepository choreRepository,
         ProfileRepository profileRepository,
-        HouseholdRepository householdRepository
+        HouseholdRepository householdRepository,
+        ActivityEventService activityEventService
     ) {
         this.choreRepository = choreRepository;
         this.profileRepository = profileRepository;
         this.householdRepository = householdRepository;
+        this.activityEventService = activityEventService;
     }
 
     public ChoreDTO toDTO(Chore chore) {
@@ -100,6 +104,12 @@ public class ChoreService {
 
         chore.setProfile(profile);
         chore.setHousehold(household);
+        activityEventService.log(
+            profileId,
+            householdId,
+            ActivityType.CHORE_CREATED,
+            false
+        );
         return choreRepository.save(chore);
     }
 
@@ -120,6 +130,12 @@ public class ChoreService {
             .findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Chore", id));
         existing.setIsCompleted(true);
+        activityEventService.log(
+            existing.getProfile().getProfileId(),
+            existing.getHousehold().getHouseholdId(),
+            ActivityType.CHORE_COMPLETED,
+            true
+        );
         return toDTO(choreRepository.save(existing));
     }
 

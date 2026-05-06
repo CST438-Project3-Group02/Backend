@@ -6,6 +6,7 @@ import com.roomie.entity.Expense;
 import com.roomie.entity.Household;
 import com.roomie.entity.Profile;
 import com.roomie.entity.ProfileHousehold;
+import com.roomie.enums.ActivityType;
 import com.roomie.exception.ResourceNotFoundException;
 import com.roomie.repository.BillRepository;
 import com.roomie.repository.ExpenseRepository;
@@ -21,15 +22,18 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final HouseholdRepository householdRepository;
     private final BillRepository billRepository;
+    private final ActivityEventService activityEventService;
 
     public ExpenseService(
         ExpenseRepository expenseRepository,
         HouseholdRepository householdRepository,
-        BillRepository billRepository
+        BillRepository billRepository,
+        ActivityEventService activityEventService
     ) {
         this.expenseRepository = expenseRepository;
         this.householdRepository = householdRepository;
         this.billRepository = billRepository;
+        this.activityEventService = activityEventService;
     }
 
     public ExpenseDTO toDTO(Expense expense) {
@@ -157,6 +161,13 @@ public class ExpenseService {
             bill.setExpense(saved);
             billRepository.save(bill);
         }
+
+        activityEventService.log(
+            members.get(0).getProfileId(),
+            householdId,
+            ActivityType.EXPENSE_CREATED,
+            false
+        );
 
         return toDTO(saved);
     }

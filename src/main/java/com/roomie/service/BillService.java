@@ -2,6 +2,7 @@ package com.roomie.service;
 
 import com.roomie.dto.BillDTO;
 import com.roomie.entity.Bill;
+import com.roomie.enums.ActivityType;
 import com.roomie.exception.ResourceNotFoundException;
 import com.roomie.repository.BillRepository;
 import java.util.List;
@@ -12,9 +13,14 @@ import org.springframework.stereotype.Service;
 public class BillService {
 
     private final BillRepository billRepository;
+    private final ActivityEventService activityEventService;
 
-    public BillService(BillRepository billRepository) {
+    public BillService(
+        BillRepository billRepository,
+        ActivityEventService activityEventService
+    ) {
         this.billRepository = billRepository;
+        this.activityEventService = activityEventService;
     }
 
     public BillDTO toDTO(Bill bill) {
@@ -70,6 +76,12 @@ public class BillService {
             .findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Bill", id));
         bill.setPaid(true);
+        activityEventService.log(
+            bill.getProfile().getProfileId(),
+            bill.getExpense().getHousehold().getHouseholdId(),
+            ActivityType.BILL_PAID,
+            true
+        );
         return toDTO(billRepository.save(bill));
     }
 
