@@ -26,6 +26,14 @@ public class ProfileHouseholdController {
         return ResponseEntity.ok(profileHouseholdService.getMembershipById(id));
     }
 
+    @GetMapping
+    public ResponseEntity<ProfileHousehold> getMembershipByProfileAndHousehold(
+            @RequestParam Long profileId,
+            @RequestParam Long householdId
+    ) {
+        return ResponseEntity.ok(profileHouseholdService.getMembershipByProfileAndHousehold(profileId, householdId));
+    }
+
     @PostMapping
     public ResponseEntity<ProfileHousehold> addMember(
         @RequestBody Map<String, Object> payload
