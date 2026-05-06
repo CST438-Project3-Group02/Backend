@@ -74,13 +74,17 @@ public class ActivityController {
     ) {
         Long profileId = Long.valueOf(payload.get("profileId").toString());
         Long householdId = Long.valueOf(payload.get("householdId").toString());
+        String postComment = payload.containsKey("postComment")
+            ? payload.get("postComment").toString()
+            : null;
         Integer activityType = Integer.valueOf(
             payload.get("activityType").toString()
         );
         Activity activity = activityService.createActivity(
             profileId,
             householdId,
-            activityType
+            activityType,
+            postComment
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(
             activityService.toDTO(activity)
