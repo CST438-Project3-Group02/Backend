@@ -54,6 +54,38 @@ public class ExpenseService {
         );
     }
 
+    private void recalculateBills(Expense expense, List<Profile> members) {
+        billRepository.deleteAll(
+            billRepository.findByExpense_ExpenseId(expense.getExpenseId())
+        );
+
+        if (members.isEmpty()) return;
+
+        double splitAmount = expense.getAmount() / members.size();
+        expense.setSplitAmount(splitAmount);
+        expenseRepository.save(expense);
+
+        for (Profile member : members) {
+            Bill bill = new Bill(
+                expense.getDescription(),
+                splitAmount,
+                false,
+                expense.getPaidByDate(),
+                member
+            );
+            bill.setExpense(expense);
+            billRepository.save(bill);
+        }
+    }
+
+    private List<Profile> getHouseholdMembers(Household household) {
+        return household
+            .getProfileHouseholds()
+            .stream()
+            .map(ProfileHousehold::getProfile)
+            .collect(Collectors.toList());
+    }
+
     public List<ExpenseDTO> getAllExpenses() {
         return expenseRepository
             .findAll()
@@ -149,6 +181,10 @@ public class ExpenseService {
         expense.setHousehold(household);
         Expense saved = expenseRepository.save(expense);
 
+        if (members.isEmpty()) {
+            return toDTO(saved);
+        }
+
         // auto-generate a bill for each member
         for (Profile member : members) {
             Bill bill = new Bill(
@@ -170,6 +206,48 @@ public class ExpenseService {
         );
 
         return toDTO(saved);
+    }
+
+    public void updateRentExpense(Household household, double newAmount) {
+        List<Expense> householdExpenses =
+            expenseRepository.findByHousehold_HouseholdId(
+                household.getHouseholdId()
+            );
+
+        Expense rentExpense = householdExpenses
+            .stream()
+            .filter(e -> e.getDescription().equals("Monthly Rent"))
+            .findFirst()
+            .orElse(null);
+
+        if (rentExpense == null) {
+            createExpense(
+                household.getHouseholdId(),
+                "Monthly Rent",
+                newAmount,
+                null
+            );
+            return;
+        }
+
+        rentExpense.setAmount(newAmount);
+        expenseRepository.save(rentExpense);
+
+        List<Profile> members = getHouseholdMembers(household);
+        recalculateBills(rentExpense, members);
+    }
+
+    public void recalculateAllHouseholdExpenses(Household household) {
+        List<Profile> members = getHouseholdMembers(household);
+
+        List<Expense> expenses = expenseRepository.findByHousehold_HouseholdId(
+            household.getHouseholdId()
+        );
+
+        expenses
+            .stream()
+            .filter(e -> !e.getPaid())
+            .forEach(e -> recalculateBills(e, members));
     }
 
     public ExpenseDTO updateExpense(Long id, Expense updatedExpense) {

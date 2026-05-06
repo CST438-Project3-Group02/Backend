@@ -13,9 +13,14 @@ import org.springframework.stereotype.Service;
 public class HouseholdService {
 
     private final HouseholdRepository householdRepository;
+    private final ExpenseService expenseService;
 
-    public HouseholdService(HouseholdRepository householdRepository) {
+    public HouseholdService(
+        HouseholdRepository householdRepository,
+        ExpenseService expenseService
+    ) {
         this.householdRepository = householdRepository;
+        this.expenseService = expenseService;
     }
 
     private HouseholdDTO toDTO(Household household) {
@@ -99,13 +104,29 @@ public class HouseholdService {
     }
 
     public Household createHousehold(Household household) {
-        return householdRepository.save(household);
+        Household saved = householdRepository.save(household);
+
+        if (saved.getRentCost() != null && saved.getRentCost() > 0) {
+            expenseService.createExpense(
+                saved.getHouseholdId(),
+                "Rent",
+                saved.getRentCost().doubleValue(),
+                null
+            );
+        }
+
+        return saved;
     }
 
     public HouseholdDTO updateHousehold(Long id, Household updatedHousehold) {
         Household existing = householdRepository
             .findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Household", id));
+
+        boolean rentChanged =
+            updatedHousehold.getRentCost() != null &&
+            !updatedHousehold.getRentCost().equals(existing.getRentCost());
+
         existing.setHouseholdName(updatedHousehold.getHouseholdName());
         existing.setRentCost(updatedHousehold.getRentCost());
         existing.setNumOfBedrooms(updatedHousehold.getNumOfBedrooms());
@@ -114,7 +135,16 @@ public class HouseholdService {
         existing.setState(updatedHousehold.getState());
         existing.setZipCode(updatedHousehold.getZipCode());
         existing.setCountry(updatedHousehold.getCountry());
-        return toDTO(householdRepository.save(existing));
+        Household saved = householdRepository.save(existing);
+
+        if (rentChanged) {
+            expenseService.updateRentExpense(
+                saved,
+                updatedHousehold.getRentCost().doubleValue()
+            );
+        }
+
+        return toDTO(saved);
     }
 
     public void deleteHousehold(Long id) {

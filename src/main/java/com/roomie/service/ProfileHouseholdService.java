@@ -19,17 +19,20 @@ public class ProfileHouseholdService {
     private final ProfileRepository profileRepository;
     private final HouseholdRepository householdRepository;
     private final ActivityEventService activityEventService;
+    private final ExpenseService expenseService;
 
     public ProfileHouseholdService(
         ProfileHouseholdRepository profileHouseholdRepository,
         ProfileRepository profileRepository,
         HouseholdRepository householdRepository,
-        ActivityEventService activityEventService
+        ActivityEventService activityEventService,
+        ExpenseService expenseService
     ) {
         this.profileHouseholdRepository = profileHouseholdRepository;
         this.profileRepository = profileRepository;
         this.householdRepository = householdRepository;
         this.activityEventService = activityEventService;
+        this.expenseService = expenseService;
     }
 
     public ProfileHousehold getMembershipById(Long id) {
@@ -75,6 +78,14 @@ public class ProfileHouseholdService {
         membership.setHousehold(household);
         membership.setPrivs(privs);
         membership.setPayInterval(payInterval);
+
+        ProfileHousehold saved = profileHouseholdRepository.save(membership);
+        Household updatedHousehold = householdRepository
+            .findById(householdId)
+            .orElseThrow(() ->
+                new ResourceNotFoundException("Household", householdId)
+            );
+        expenseService.recalculateAllHouseholdExpenses(updatedHousehold);
         activityEventService.log(
             profileId,
             householdId,
@@ -82,7 +93,7 @@ public class ProfileHouseholdService {
             false
         );
 
-        return profileHouseholdRepository.save(membership);
+        return saved;
     }
 
     public ProfileHousehold updateMember(Long id, ProfileHousehold updated) {
@@ -100,12 +111,15 @@ public class ProfileHouseholdService {
         ProfileHousehold membership = profileHouseholdRepository
             .findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Membership", id));
-        if (!profileHouseholdRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Membership", id);
-        }
         Long profileId = membership.getProfile().getProfileId();
         Long householdId = membership.getHousehold().getHouseholdId();
         profileHouseholdRepository.deleteById(id);
+        Household updatedHousehold = householdRepository
+            .findById(householdId)
+            .orElseThrow(() ->
+                new ResourceNotFoundException("Household", householdId)
+            );
+        expenseService.recalculateAllHouseholdExpenses(updatedHousehold);
         activityEventService.log(
             profileId,
             householdId,
