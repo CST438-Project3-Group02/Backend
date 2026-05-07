@@ -1,4 +1,4 @@
-package com.roomie.config;
+package com.roomie.cors;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +13,21 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:8081", "https://roomie-28aj.vercel.app")
-                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-                        .allowedHeaders("*");
+                registry
+                    .addMapping("/api/**")
+                    .allowedOrigins(
+                        "http://localhost:8081",
+                        "https://roomie-28aj.vercel.app"
+                    )
+                    .allowedMethods(
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "PATCH",
+                        "DELETE",
+                        "OPTIONS"
+                    )
+                    .allowedHeaders("*");
             }
         };
     }
