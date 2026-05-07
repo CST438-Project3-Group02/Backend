@@ -27,6 +27,10 @@ public class Activity extends BaseEntity {
 
     private boolean isCompleted;
 
+    private String postComment;
+
+    private String picUrl;
+
     @OneToMany(
         mappedBy = "activity",
         cascade = CascadeType.ALL,
@@ -100,6 +104,22 @@ public class Activity extends BaseEntity {
         this.household = household;
     }
 
+    public String getPostComment() {
+        return postComment;
+    }
+
+    public void setPostComment(String postComment) {
+        this.postComment = postComment;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
     @Override
     public String toString() {
         return (
@@ -110,6 +130,8 @@ public class Activity extends BaseEntity {
             activityType +
             ", isCompleted=" +
             isCompleted +
+            ", postComment=" +
+            postComment +
             '}'
         );
     }

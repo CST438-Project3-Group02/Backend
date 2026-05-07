@@ -1,5 +1,6 @@
 package com.roomie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
@@ -20,10 +21,12 @@ public class Bill extends BaseEntity {
 
     private Instant payByDate;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "expense_id", nullable = false)
     private Expense expense;

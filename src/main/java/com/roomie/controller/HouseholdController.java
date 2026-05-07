@@ -4,6 +4,7 @@ import com.roomie.dto.HouseholdDTO;
 import com.roomie.entity.Household;
 import com.roomie.service.HouseholdService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,11 +69,52 @@ public class HouseholdController {
     }
 
     @PostMapping
-    public ResponseEntity<Household> createHousehold(
-        @RequestBody Household household
+    public ResponseEntity<HouseholdDTO> createHousehold(
+        @RequestBody Map<String, Object> payload
     ) {
+        Long profileId = ((Number) payload.get("profileId")).longValue();
+
+        Household household = new Household();
+
+        // strings — only set if present and non-empty
+        if (payload.get("householdName") != null) household.setHouseholdName(
+            (String) payload.get("householdName")
+        );
+        if (
+            payload.get("address") != null &&
+            !payload.get("address").toString().isEmpty()
+        ) household.setAddress((String) payload.get("address"));
+        if (
+            payload.get("city") != null &&
+            !payload.get("city").toString().isEmpty()
+        ) household.setCity((String) payload.get("city"));
+        if (
+            payload.get("state") != null &&
+            !payload.get("state").toString().isEmpty()
+        ) household.setState((String) payload.get("state"));
+        if (
+            payload.get("zipCode") != null &&
+            !payload.get("zipCode").toString().isEmpty()
+        ) household.setZipCode((String) payload.get("zipCode"));
+        if (
+            payload.get("country") != null &&
+            !payload.get("country").toString().isEmpty()
+        ) household.setCountry((String) payload.get("country"));
+
+        // numbers — only set if present and non-null
+        if (payload.get("rentCost") != null) household.setRentCost(
+            ((Number) payload.get("rentCost")).floatValue()
+        );
+        if (payload.get("numOfBedrooms") != null) household.setNumOfBedrooms(
+            ((Number) payload.get("numOfBedrooms")).intValue()
+        );
+
+        Household created = householdService.createHousehold(
+            household,
+            profileId
+        );
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            householdService.createHousehold(household)
+            householdService.toDTO(created)
         );
     }
 

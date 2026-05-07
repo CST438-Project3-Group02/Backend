@@ -12,6 +12,7 @@ import com.roomie.repository.BillRepository;
 import com.roomie.repository.ExpenseRepository;
 import com.roomie.repository.HouseholdRepository;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,52 @@ public class ExpenseService {
                 ? expense.getHousehold().getHouseholdName()
                 : null
         );
+    }
+
+    private void recalculateBills(Expense expense, List<Profile> members) {
+        billRepository.deleteAll(
+            billRepository.findByExpense_ExpenseId(expense.getExpenseId())
+        );
+        if (members.isEmpty()) return;
+
+        double splitAmount = 100.0 / members.size(); // percentage
+        expense.setSplitAmount(splitAmount);
+        expenseRepository.save(expense);
+
+        double billAmount = expense.getAmount() * (splitAmount / 100.0);
+        for (Profile member : members) {
+            Bill bill = new Bill(
+                expense.getDescription(),
+                billAmount,
+                false,
+                expense.getPaidByDate(),
+                member
+            );
+            bill.setExpense(expense);
+            billRepository.save(bill);
+        }
+    }
+
+    private List<Profile> getHouseholdMembers(Household household) {
+        Household householdWithMembers = householdRepository
+            .findHouseholdWithProfiles(household.getHouseholdId())
+            .orElseThrow(() ->
+                new ResourceNotFoundException(
+                    "Household",
+                    household.getHouseholdId()
+                )
+            );
+
+        if (
+            householdWithMembers.getProfileHouseholds() == null
+        ) return new ArrayList<>();
+
+        return householdWithMembers
+            .getProfileHouseholds()
+            .stream()
+            .map(ProfileHousehold::getProfile)
+            .filter(p -> p != null)
+            .collect(Collectors.toList());
     }
 
     public List<ExpenseDTO> getAllExpenses() {
@@ -109,36 +156,29 @@ public class ExpenseService {
             .collect(Collectors.toList());
     }
 
-    // core method — creates expense and auto-generates bills for each household member
     public ExpenseDTO createExpense(
         Long householdId,
         String description,
         Double amount,
-        Instant paidByDate
+        Instant paidByDate,
+        List<Profile> members
     ) {
         Household household = householdRepository
-            .findById(householdId)
+            .findHouseholdWithProfiles(householdId)
             .orElseThrow(() ->
                 new ResourceNotFoundException("Household", householdId)
             );
 
-        // get all profiles in the household
-        List<Profile> members = household
-            .getProfileHouseholds()
-            .stream()
-            .map(ProfileHousehold::getProfile)
-            .collect(Collectors.toList());
-
-        if (members.isEmpty()) {
-            throw new RuntimeException(
-                "Household has no members to split the expense with"
-            );
+        if (members == null) {
+            members = getHouseholdMembers(household);
         }
 
-        // calculate split amount
-        double splitAmount = amount / members.size();
+        if (members == null) {
+            members = new ArrayList<>();
+        }
 
-        // create and save the expense
+        double splitAmount = members.isEmpty() ? 100.0 : 100.0 / members.size();
+
         Expense expense = new Expense(
             description,
             amount,
@@ -149,11 +189,14 @@ public class ExpenseService {
         expense.setHousehold(household);
         Expense saved = expenseRepository.save(expense);
 
-        // auto-generate a bill for each member
+        if (members.isEmpty()) {
+            return toDTO(saved);
+        }
+        double billAmount = amount * (splitAmount / 100.0);
         for (Profile member : members) {
             Bill bill = new Bill(
                 description,
-                splitAmount,
+                billAmount,
                 false,
                 paidByDate,
                 member
@@ -170,6 +213,50 @@ public class ExpenseService {
         );
 
         return toDTO(saved);
+    }
+
+    public void updateRentExpense(Household household, double newAmount) {
+        List<Expense> householdExpenses =
+            expenseRepository.findByHousehold_HouseholdId(
+                household.getHouseholdId()
+            );
+
+        Expense rentExpense = householdExpenses
+            .stream()
+            .filter(e -> e.getDescription().equals("Rent"))
+            .findFirst()
+            .orElse(null);
+
+        List<Profile> members = getHouseholdMembers(household);
+
+        if (rentExpense == null) {
+            createExpense(
+                household.getHouseholdId(),
+                "Rent",
+                newAmount,
+                null,
+                members
+            );
+            return;
+        }
+
+        // rent expense exists — update amount and recalculate bills
+        rentExpense.setAmount(newAmount);
+        expenseRepository.save(rentExpense);
+        recalculateBills(rentExpense, members);
+    }
+
+    public void recalculateAllHouseholdExpenses(Household household) {
+        List<Profile> members = getHouseholdMembers(household);
+
+        List<Expense> expenses = expenseRepository.findByHousehold_HouseholdId(
+            household.getHouseholdId()
+        );
+
+        expenses
+            .stream()
+            .filter(e -> !e.getPaid())
+            .forEach(e -> recalculateBills(e, members));
     }
 
     public ExpenseDTO updateExpense(Long id, Expense updatedExpense) {

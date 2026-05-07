@@ -3,6 +3,8 @@ package com.roomie.repository;
 import com.roomie.entity.Bill;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -11,4 +13,12 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findByExpense_ExpenseId(Long expenseId);
     List<Bill> findByProfile_ProfileIdAndPaid(Long profileId, Boolean paid);
     List<Bill> findByExpense_ExpenseId_AndPaid(Long expenseId, Boolean paid);
+
+    @Query(
+        "SELECT b FROM Bill b WHERE b.profile.profileId = :profileId AND b.expense.household.householdId = :householdId"
+    )
+    List<Bill> findByProfileIdAndHouseholdId(
+        @Param("profileId") Long profileId,
+        @Param("householdId") Long householdId
+    );
 }

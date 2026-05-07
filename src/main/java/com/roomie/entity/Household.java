@@ -2,6 +2,7 @@ package com.roomie.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,7 +44,7 @@ public class Household extends BaseEntity {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-    private List<ProfileHousehold> profileHouseholds;
+    private List<ProfileHousehold> profileHouseholds = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(

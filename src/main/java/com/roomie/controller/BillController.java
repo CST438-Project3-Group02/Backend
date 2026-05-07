@@ -49,6 +49,17 @@ public class BillController {
         return ResponseEntity.ok(billService.getBillsByExpense(expenseId));
     }
 
+    // GET /api/bills/profile/1/household/1
+    @GetMapping("/profile/{profileId}/household/{householdId}")
+    public ResponseEntity<List<BillDTO>> getBillsByProfileAndHousehold(
+        @PathVariable Long profileId,
+        @PathVariable Long householdId
+    ) {
+        return ResponseEntity.ok(
+            billService.getBillsByProfileAndHousehold(profileId, householdId)
+        );
+    }
+
     // PATCH /api/bills/1/paid
     @PatchMapping("/{id}/paid")
     public ResponseEntity<BillDTO> markPaid(@PathVariable Long id) {
