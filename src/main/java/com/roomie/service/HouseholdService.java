@@ -1,6 +1,7 @@
 package com.roomie.service;
 
 import com.roomie.dto.HouseholdDTO;
+import com.roomie.dto.ProfileDTO;
 import com.roomie.entity.Household;
 import com.roomie.entity.ProfileHousehold;
 import com.roomie.exception.ResourceNotFoundException;
@@ -52,13 +53,24 @@ public class HouseholdService {
             .findHouseholdWithProfiles(id)
             .orElseThrow(() -> new ResourceNotFoundException("Household", id));
         HouseholdDTO dto = toDTO(household);
-        dto.setProfiles(
-            household
+
+        List<ProfileDTO> profileDTOs = household
                 .getProfileHouseholds()
                 .stream()
-                .map(ProfileHousehold::getProfile)
-                .collect(Collectors.toList())
-        );
+                .map(ph -> {
+                    ProfileDTO profileDTO = new ProfileDTO(
+                            ph.getProfile().getProfileId(),
+                            ph.getProfile().getName(),
+                            ph.getProfile().getEmail(),
+                            ph.getProfile().getAge(),
+                            ph.getProfile().getProfilePicUrl()
+                    );
+                    profileDTO.setMemberships(ph); // attach the membership
+                    return profileDTO;
+                })
+                .collect(Collectors.toList());
+
+        dto.setProfiles(profileDTOs);
         return dto;
     }
 

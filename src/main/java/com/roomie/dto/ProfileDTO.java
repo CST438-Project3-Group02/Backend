@@ -19,6 +19,7 @@ public class ProfileDTO {
     private List<Activity> activities;
     private List<Chore> chores;
     private List<Invite> invites;
+    private ProfileHousehold memberships;
 
     public ProfileDTO(
         Long profileId,
@@ -57,6 +58,8 @@ public class ProfileDTO {
     public List<Household> getHouseholds() {
         return households;
     }
+
+    public ProfileHousehold getMemberships() { return memberships; }
 
     public void setHouseholds(List<Household> households) {
         this.households = households;
@@ -124,5 +127,9 @@ public class ProfileDTO {
 
     public void setInvites(List<Invite> invites) {
         this.invites = invites;
+    }
+
+    public void setMemberships(ProfileHousehold memberships) {
+        this.memberships = memberships;
     }
 }

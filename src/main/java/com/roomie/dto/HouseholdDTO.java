@@ -15,7 +15,7 @@ public class HouseholdDTO {
     private String zipCode;
     private String country;
 
-    private List<Profile> profiles;
+    private List<ProfileDTO> profiles;
     private List<Chore> chores;
     private List<GroceryList> groceryLists;
     private List<Expense> expenses;
@@ -79,11 +79,11 @@ public class HouseholdDTO {
         return country;
     }
 
-    public List<Profile> getProfiles() {
+    public List<ProfileDTO> getProfiles() {
         return profiles;
     }
 
-    public void setProfiles(List<Profile> profiles) {
+    public void setProfiles(List<ProfileDTO> profiles) {
         this.profiles = profiles;
     }
 
