@@ -3,6 +3,8 @@ package com.roomie.dto;
 import com.roomie.entity.ActivityComment;
 import com.roomie.entity.ActivityReaction;
 import com.roomie.entity.Profile;
+
+import java.time.Instant;
 import java.util.List;
 
 public class ActivityDTO {
@@ -13,6 +15,7 @@ public class ActivityDTO {
     private Profile profile;
     private String postComment;
     private String picUrl;
+    private Instant createdAt;
 
     private List<ActivityComment> activityComments;
     private List<ActivityReaction> activityReactions;
@@ -23,7 +26,8 @@ public class ActivityDTO {
         boolean isCompleted,
         Profile profile,
         String postComment,
-        String picUrl
+        String picUrl,
+        Instant createdAt
     ) {
         this.activityId = activityId;
         this.activityType = activityType;
@@ -31,6 +35,7 @@ public class ActivityDTO {
         this.profile = profile;
         this.postComment = postComment;
         this.picUrl = picUrl;
+        this.createdAt = createdAt;
     }
 
     public Long getActivityId() {
@@ -71,5 +76,13 @@ public class ActivityDTO {
 
     public void setActivityReactions(List<ActivityReaction> activityReactions) {
         this.activityReactions = activityReactions;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 }
