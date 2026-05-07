@@ -154,7 +154,6 @@ public class ExpenseService {
             .collect(Collectors.toList());
     }
 
-    // core method — creates expense and auto-generates bills for each household member
     public ExpenseDTO createExpense(
         Long householdId,
         String description,
@@ -168,18 +167,6 @@ public class ExpenseService {
                 new ResourceNotFoundException("Household", householdId)
             );
 
-        // List<Profile> members =
-        //     household.getProfileHouseholds() == null
-        //         ? new ArrayList<>()
-        //         : household
-        //               .getProfileHouseholds()
-        //               .stream()
-        //               .map(ProfileHousehold::getProfile)
-        //               .collect(Collectors.toList());
-
-        // double splitAmount = members.isEmpty()
-        //     ? amount
-        //     : amount / members.size();
         double splitAmount = members.isEmpty() ? 100.0 : 100.0 / members.size();
 
         Expense expense = new Expense(
@@ -192,7 +179,6 @@ public class ExpenseService {
         expense.setHousehold(household);
         Expense saved = expenseRepository.save(expense);
 
-        // ✅ early return here — before bill generation
         if (members.isEmpty()) {
             return toDTO(saved);
         }
