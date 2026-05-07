@@ -92,10 +92,12 @@ public class ExpenseService {
         if (
             householdWithMembers.getProfileHouseholds() == null
         ) return new ArrayList<>();
+
         return householdWithMembers
             .getProfileHouseholds()
             .stream()
             .map(ProfileHousehold::getProfile)
+            .filter(p -> p != null)
             .collect(Collectors.toList());
     }
 
@@ -166,6 +168,14 @@ public class ExpenseService {
             .orElseThrow(() ->
                 new ResourceNotFoundException("Household", householdId)
             );
+
+        if (members == null) {
+            members = getHouseholdMembers(household);
+        }
+
+        if (members == null) {
+            members = new ArrayList<>();
+        }
 
         double splitAmount = members.isEmpty() ? 100.0 : 100.0 / members.size();
 

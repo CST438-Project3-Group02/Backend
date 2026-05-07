@@ -85,6 +85,17 @@ public class BillService {
         return toDTO(billRepository.save(bill));
     }
 
+    public List<BillDTO> getBillsByProfileAndHousehold(
+        Long profileId,
+        Long householdId
+    ) {
+        return billRepository
+            .findByProfileIdAndHouseholdId(profileId, householdId)
+            .stream()
+            .map(this::toDTO)
+            .collect(Collectors.toList());
+    }
+
     public void deleteBill(Long id) {
         if (!billRepository.existsById(id)) {
             throw new ResourceNotFoundException("Bill", id);
