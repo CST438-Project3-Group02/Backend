@@ -69,7 +69,7 @@ public class HouseholdController {
     }
 
     @PostMapping
-    public ResponseEntity<Household> createHousehold(
+    public ResponseEntity<HouseholdDTO> createHousehold(
         @RequestBody Map<String, Object> payload
     ) {
         Long profileId = ((Number) payload.get("profileId")).longValue();
@@ -109,8 +109,12 @@ public class HouseholdController {
             ((Number) payload.get("numOfBedrooms")).intValue()
         );
 
+        Household created = householdService.createHousehold(
+            household,
+            profileId
+        );
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            householdService.createHousehold(household, profileId)
+            householdService.toDTO(created)
         );
     }
 

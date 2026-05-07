@@ -38,7 +38,7 @@ public class HouseholdService {
         this.profileRepository = profileRepository;
     }
 
-    private HouseholdDTO toDTO(Household household) {
+    public HouseholdDTO toDTO(Household household) {
         return new HouseholdDTO(
             household.getHouseholdId(),
             household.getHouseholdName(),
@@ -142,7 +142,8 @@ public class HouseholdService {
                 saved.getHouseholdId(),
                 "Rent",
                 saved.getRentCost().doubleValue(),
-                null
+                null,
+                List.of(profile)
             );
         }
 

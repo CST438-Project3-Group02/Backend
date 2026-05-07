@@ -88,7 +88,8 @@ public class ExpenseController {
                 householdId,
                 description,
                 amount,
-                paidByDate
+                paidByDate,
+                null
             )
         );
     }

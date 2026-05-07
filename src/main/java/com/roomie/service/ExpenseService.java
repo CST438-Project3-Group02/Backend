@@ -159,7 +159,8 @@ public class ExpenseService {
         Long householdId,
         String description,
         Double amount,
-        Instant paidByDate
+        Instant paidByDate,
+        List<Profile> members
     ) {
         Household household = householdRepository
             .findHouseholdWithProfiles(householdId)
@@ -167,14 +168,14 @@ public class ExpenseService {
                 new ResourceNotFoundException("Household", householdId)
             );
 
-        List<Profile> members =
-            household.getProfileHouseholds() == null
-                ? new ArrayList<>()
-                : household
-                      .getProfileHouseholds()
-                      .stream()
-                      .map(ProfileHousehold::getProfile)
-                      .collect(Collectors.toList());
+        // List<Profile> members =
+        //     household.getProfileHouseholds() == null
+        //         ? new ArrayList<>()
+        //         : household
+        //               .getProfileHouseholds()
+        //               .stream()
+        //               .map(ProfileHousehold::getProfile)
+        //               .collect(Collectors.toList());
 
         // double splitAmount = members.isEmpty()
         //     ? amount
@@ -195,7 +196,6 @@ public class ExpenseService {
         if (members.isEmpty()) {
             return toDTO(saved);
         }
-
         double billAmount = amount * (splitAmount / 100.0);
         for (Profile member : members) {
             Bill bill = new Bill(
@@ -227,24 +227,26 @@ public class ExpenseService {
 
         Expense rentExpense = householdExpenses
             .stream()
-            .filter(e -> e.getDescription().equals("Monthly Rent"))
+            .filter(e -> e.getDescription().equals("Rent"))
             .findFirst()
             .orElse(null);
+
+        List<Profile> members = getHouseholdMembers(household);
 
         if (rentExpense == null) {
             createExpense(
                 household.getHouseholdId(),
-                "Monthly Rent",
+                "Rent",
                 newAmount,
-                null
+                null,
+                members
             );
             return;
         }
 
+        // rent expense exists — update amount and recalculate bills
         rentExpense.setAmount(newAmount);
         expenseRepository.save(rentExpense);
-
-        List<Profile> members = getHouseholdMembers(household);
         recalculateBills(rentExpense, members);
     }
 
