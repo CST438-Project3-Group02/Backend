@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> findByHousehold_HouseholdId(Long householdId);
-
+    List<Activity> findByHousehold_HouseholdIdOrderByCreatedAtDesc(Long householdId);
     List<Activity> findByProfile_ProfileId(Long profileId);
 
     @Query(

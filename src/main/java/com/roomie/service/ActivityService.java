@@ -36,7 +36,8 @@ public class ActivityService {
             activity.isCompleted(),
             activity.getProfile(),
             activity.getPostComment(),
-            activity.getPicUrl()
+            activity.getPicUrl(),
+            activity.getCreatedAt()
         );
     }
 
@@ -57,7 +58,7 @@ public class ActivityService {
 
     public List<ActivityDTO> getActivityFeedByHousehold(Long householdId) {
         return activityRepository
-            .findByHousehold_HouseholdId(householdId)
+            .findByHousehold_HouseholdIdOrderByCreatedAtDesc(householdId)
             .stream()
             .map(this::toDTO)
             .collect(Collectors.toList());
