@@ -2,25 +2,40 @@ package com.roomie.service;
 
 import com.roomie.dto.HouseholdDTO;
 import com.roomie.entity.Household;
+import com.roomie.entity.Profile;
 import com.roomie.entity.ProfileHousehold;
 import com.roomie.exception.ResourceNotFoundException;
 import com.roomie.repository.HouseholdRepository;
+import com.roomie.repository.ProfileHouseholdRepository;
+import com.roomie.repository.ProfileRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class HouseholdService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final HouseholdRepository householdRepository;
     private final ExpenseService expenseService;
+    private final ProfileHouseholdRepository profileHouseholdRepository;
+    private final ProfileRepository profileRepository;
 
     public HouseholdService(
         HouseholdRepository householdRepository,
-        ExpenseService expenseService
+        ExpenseService expenseService,
+        ProfileHouseholdRepository profileHouseholdRepository,
+        ProfileRepository profileRepository
     ) {
         this.householdRepository = householdRepository;
         this.expenseService = expenseService;
+        this.profileHouseholdRepository = profileHouseholdRepository;
+        this.profileRepository = profileRepository;
     }
 
     private HouseholdDTO toDTO(Household household) {
@@ -103,8 +118,24 @@ public class HouseholdService {
         return dto;
     }
 
-    public Household createHousehold(Household household) {
+    @Transactional
+    public Household createHousehold(Household household, Long profileId) {
         Household saved = householdRepository.save(household);
+
+        Profile profile = profileRepository
+            .findById(profileId)
+            .orElseThrow(() ->
+                new ResourceNotFoundException("Profile", profileId)
+            );
+
+        ProfileHousehold membership = new ProfileHousehold();
+        membership.setProfile(profile);
+        membership.setHousehold(saved);
+        membership.setPrivs(1);
+        membership.setPayInterval(3);
+        profileHouseholdRepository.save(membership);
+
+        entityManager.flush();
 
         if (saved.getRentCost() != null && saved.getRentCost() > 0) {
             expenseService.createExpense(
