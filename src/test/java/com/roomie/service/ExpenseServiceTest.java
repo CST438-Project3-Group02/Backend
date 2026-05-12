@@ -81,8 +81,6 @@ class ExpenseServiceTest {
         }
     }
 
-    // ─── getAllExpenses ───────────────────────────────────────────────────────
-
     @Test
     void getAllExpenses_returnsListOfDTOs() {
         when(expenseRepository.findAll()).thenReturn(List.of(testExpense));
@@ -99,8 +97,6 @@ class ExpenseServiceTest {
 
         assertThat(expenseService.getAllExpenses()).isEmpty();
     }
-
-    // ─── getExpenseById ───────────────────────────────────────────────────────
 
     @Test
     void getExpenseById_returnsDTO_whenFound() {
@@ -123,8 +119,6 @@ class ExpenseServiceTest {
         ).isInstanceOf(ResourceNotFoundException.class);
     }
 
-    // ─── getExpensesByHousehold ───────────────────────────────────────────────
-
     @Test
     void getExpensesByHousehold_returnsDTOs() {
         when(expenseRepository.findByHousehold_HouseholdId(1L)).thenReturn(
@@ -136,8 +130,6 @@ class ExpenseServiceTest {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getHouseholdId()).isEqualTo(1L);
     }
-
-    // ─── createExpense ────────────────────────────────────────────────────────
 
     @Test
     void createExpense_withMembersPassed_savesExpenseAndBills() {
@@ -207,8 +199,6 @@ class ExpenseServiceTest {
         ).isInstanceOf(ResourceNotFoundException.class);
     }
 
-    // ─── updateExpense ────────────────────────────────────────────────────────
-
     @Test
     void updateExpense_updatesFieldsAndReturnsDTO() {
         Expense updated = new Expense("Internet", 60.0, 50.0, false, null);
@@ -232,8 +222,6 @@ class ExpenseServiceTest {
         ).isInstanceOf(ResourceNotFoundException.class);
     }
 
-    // ─── markPaid ─────────────────────────────────────────────────────────────
-
     @Test
     void markPaid_setsPaidTrueAndReturnsDTO() {
         when(expenseRepository.findById(1L)).thenReturn(
@@ -256,8 +244,6 @@ class ExpenseServiceTest {
         );
     }
 
-    // ─── deleteExpense ────────────────────────────────────────────────────────
-
     @Test
     void deleteExpense_deletesWhenExists() {
         when(expenseRepository.existsById(1L)).thenReturn(true);
@@ -277,8 +263,6 @@ class ExpenseServiceTest {
 
         verify(expenseRepository, never()).deleteById(any());
     }
-
-    // ─── toDTO ────────────────────────────────────────────────────────────────
 
     @Test
     void toDTO_mapsAllFieldsCorrectly() {

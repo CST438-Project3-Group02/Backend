@@ -81,8 +81,6 @@ class ChoreServiceTest {
         }
     }
 
-    // ─── getAllChores ─────────────────────────────────────────────────────────
-
     @Test
     void getAllChores_returnsListOfDTOs() {
         when(choreRepository.findAll()).thenReturn(List.of(testChore));
@@ -99,8 +97,6 @@ class ChoreServiceTest {
 
         assertThat(choreService.getAllChores()).isEmpty();
     }
-
-    // ─── getChoreById ─────────────────────────────────────────────────────────
 
     @Test
     void getChoreById_returnsDTO_whenFound() {
@@ -121,8 +117,6 @@ class ChoreServiceTest {
         );
     }
 
-    // ─── getChoresByHousehold ─────────────────────────────────────────────────
-
     @Test
     void getChoresByHousehold_returnsDTOs() {
         when(choreRepository.findByHousehold_HouseholdId(1L)).thenReturn(
@@ -135,8 +129,6 @@ class ChoreServiceTest {
         assertThat(result.get(0).getHouseholdId()).isEqualTo(1L);
     }
 
-    // ─── getChoresByProfile ───────────────────────────────────────────────────
-
     @Test
     void getChoresByProfile_returnsDTOs() {
         when(choreRepository.findByProfile_ProfileId(1L)).thenReturn(
@@ -148,8 +140,6 @@ class ChoreServiceTest {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getProfileId()).isEqualTo(1L);
     }
-
-    // ─── getChoresByHouseholdAndStatus ────────────────────────────────────────
 
     @Test
     void getChoresByHouseholdAndStatus_returnsFilteredDTOs() {
@@ -165,8 +155,6 @@ class ChoreServiceTest {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).isCompleted()).isFalse();
     }
-
-    // ─── createChore ──────────────────────────────────────────────────────────
 
     @Test
     void createChore_savesAndReturnsChore() {
@@ -225,8 +213,6 @@ class ChoreServiceTest {
         ).isInstanceOf(ResourceNotFoundException.class);
     }
 
-    // ─── updateChore ──────────────────────────────────────────────────────────
-
     @Test
     void updateChore_updatesFieldsAndReturnsDTO() {
         Chore updated = new Chore(
@@ -253,8 +239,6 @@ class ChoreServiceTest {
             choreService.updateChore(99L, new Chore())
         ).isInstanceOf(ResourceNotFoundException.class);
     }
-
-    // ─── markComplete ─────────────────────────────────────────────────────────
 
     @Test
     void markComplete_setsCompletedTrueAndReturnsDTO() {
@@ -290,8 +274,6 @@ class ChoreServiceTest {
             ResourceNotFoundException.class
         );
     }
-
-    // ─── deleteChore ──────────────────────────────────────────────────────────
 
     @Test
     void deleteChore_deletesWhenExists() {

@@ -70,8 +70,6 @@ class ExpenseBillControllerTest {
         );
     }
 
-    // ═══ ExpenseController ════════════════════════════════════════════════════
-
     @Test
     void getAllExpenses_returns200() throws Exception {
         when(expenseService.getAllExpenses()).thenReturn(
@@ -240,8 +238,6 @@ class ExpenseBillControllerTest {
             .perform(delete("/api/expenses/99"))
             .andExpect(status().isNotFound());
     }
-
-    // ═══ BillController ═══════════════════════════════════════════════════════
 
     @Test
     void getBillById_returns200_whenFound() throws Exception {

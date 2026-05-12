@@ -75,8 +75,6 @@ class GroceryControllerTest {
         testGroceryItem.setGroceryList(testGroceryList);
     }
 
-    // ═══ GroceryListController ════════════════════════════════════════════════
-
     @Test
     void getAllGroceryLists_returns200() throws Exception {
         when(groceryListService.getAllGroceryLists()).thenReturn(
@@ -231,8 +229,6 @@ class GroceryControllerTest {
             .perform(delete("/api/grocery-lists/99"))
             .andExpect(status().isNotFound());
     }
-
-    // ═══ GroceryItemController ════════════════════════════════════════════════
 
     @Test
     void getAllGroceryItems_returns200() throws Exception {

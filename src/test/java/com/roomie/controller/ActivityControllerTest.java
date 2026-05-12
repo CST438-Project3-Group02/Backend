@@ -58,6 +58,7 @@ class ActivityControllerTest {
             false,
             testProfile,
             "Chore done!",
+            null,
             null
         );
     }

@@ -72,8 +72,6 @@ class BillServiceTest {
         }
     }
 
-    // ─── getBillById ──────────────────────────────────────────────────────────
-
     @Test
     void getBillById_returnsDTO_whenFound() {
         when(billRepository.findById(1L)).thenReturn(Optional.of(testBill));
@@ -94,8 +92,6 @@ class BillServiceTest {
         );
     }
 
-    // ─── getBillsByProfile ────────────────────────────────────────────────────
-
     @Test
     void getBillsByProfile_returnsDTOs() {
         when(billRepository.findByProfile_ProfileId(1L)).thenReturn(
@@ -108,8 +104,6 @@ class BillServiceTest {
         assertThat(result.get(0).getProfileId()).isEqualTo(1L);
     }
 
-    // ─── getBillsByExpense ────────────────────────────────────────────────────
-
     @Test
     void getBillsByExpense_returnsDTOs() {
         when(billRepository.findByExpense_ExpenseId(1L)).thenReturn(
@@ -121,8 +115,6 @@ class BillServiceTest {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getExpenseId()).isEqualTo(1L);
     }
-
-    // ─── getBillsByProfileAndStatus ───────────────────────────────────────────
 
     @Test
     void getBillsByProfileAndStatus_returnsDTOs() {
@@ -139,8 +131,6 @@ class BillServiceTest {
         assertThat(result.get(0).getPaid()).isFalse();
     }
 
-    // ─── getBillsByProfileAndHousehold ────────────────────────────────────────
-
     @Test
     void getBillsByProfileAndHousehold_returnsDTOs() {
         when(billRepository.findByProfileIdAndHouseholdId(1L, 1L)).thenReturn(
@@ -154,8 +144,6 @@ class BillServiceTest {
 
         assertThat(result).hasSize(1);
     }
-
-    // ─── markPaid ─────────────────────────────────────────────────────────────
 
     @Test
     void markPaid_setsPaidTrueAndReturnsDTO() {
@@ -192,8 +180,6 @@ class BillServiceTest {
         );
     }
 
-    // ─── deleteBill ───────────────────────────────────────────────────────────
-
     @Test
     void deleteBill_deletesWhenExists() {
         when(billRepository.existsById(1L)).thenReturn(true);
@@ -213,8 +199,6 @@ class BillServiceTest {
 
         verify(billRepository, never()).deleteById(any());
     }
-
-    // ─── toDTO ────────────────────────────────────────────────────────────────
 
     @Test
     void toDTO_mapsAllFieldsCorrectly() {
